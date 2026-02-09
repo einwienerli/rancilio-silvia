@@ -1,0 +1,1525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inside the Rancilio Silvia — Interactive Reference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── Reset & Base ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{font-family:'Inter',system-ui,sans-serif;background:#1a1a1a;color:#e8e0d8;line-height:1.6;-webkit-font-smoothing:antialiased}
+.mono{font-family:'JetBrains Mono',monospace;font-size:.85em}
+img,svg{max-width:100%;display:block}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+a{color:#c45e3a;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* ── Colors ── */
+:root{
+  --bg:#1a1a1a;--card:#f5f0eb;--card-text:#2d2a26;
+  --copper:#c45e3a;--copper-light:#d4785e;--copper-dark:#a04a2c;
+  --teal:#2b7a78;--teal-light:#3aafa9;
+  --steam:#d4a373;--steam-light:#e8c9a0;
+  --wire-live:#8b5e3c;--wire-neutral:#4a7ab5;--wire-ground:#6b8e4e;
+  --danger:#c0392b;
+  --nav-bg:rgba(26,26,26,.92);
+  --shadow:0 4px 24px rgba(0,0,0,.25);
+}
+
+/* ── Layout ── */
+.container{max-width:900px;margin:0 auto;padding:0 24px}
+section{padding:80px 0;min-height:60vh;opacity:0;transform:translateY(30px);transition:opacity .6s ease,transform .6s ease}
+section.visible{opacity:1;transform:translateY(0)}
+section:first-of-type{opacity:1;transform:none}
+
+/* ── Navigation ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:var(--nav-bg);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.06)}
+nav .container{display:flex;align-items:center;justify-content:space-between;height:56px}
+nav .logo{font-weight:700;font-size:.95rem;color:var(--copper);letter-spacing:.02em}
+nav .links{display:flex;gap:8px}
+nav .links a{color:#a09890;font-size:.8rem;font-weight:500;padding:6px 12px;border-radius:6px;transition:color .2s,background .2s;text-decoration:none}
+nav .links a:hover,nav .links a.active{color:#fff;background:rgba(196,94,58,.15)}
+.hamburger{display:none;flex-direction:column;gap:4px;padding:8px;cursor:pointer}
+.hamburger span{display:block;width:20px;height:2px;background:#a09890;border-radius:2px;transition:transform .3s,opacity .3s}
+.mobile-menu{display:none;position:fixed;top:56px;left:0;right:0;background:var(--nav-bg);backdrop-filter:blur(12px);padding:16px 24px;border-bottom:1px solid rgba(255,255,255,.06)}
+.mobile-menu.open{display:flex;flex-direction:column;gap:4px}
+.mobile-menu a{color:#a09890;font-size:.9rem;padding:10px 12px;border-radius:6px;text-decoration:none}
+.mobile-menu a:hover,.mobile-menu a.active{color:#fff;background:rgba(196,94,58,.15)}
+
+/* ── Hero ── */
+#hero{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;text-align:center;padding-top:56px;opacity:1;transform:none}
+#hero h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:700;color:#fff;margin-bottom:12px;letter-spacing:-.02em}
+#hero .subtitle{font-size:clamp(.95rem,2vw,1.15rem);color:#a09890;max-width:500px;margin-bottom:48px}
+.hero-machine{width:min(300px,60vw);margin-bottom:40px}
+.scroll-arrow{animation:bounce 2s infinite;color:#a09890;font-size:1.5rem;opacity:.6}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+@keyframes steam-rise{0%{transform:translateY(0) scaleX(1);opacity:.7}50%{transform:translateY(-18px) scaleX(1.3);opacity:.3}100%{transform:translateY(-36px) scaleX(.8);opacity:0}}
+.steam-particle{animation:steam-rise 2.5s ease-out infinite;transform-origin:center bottom}
+.steam-particle:nth-child(2){animation-delay:.6s;animation-duration:2.8s}
+.steam-particle:nth-child(3){animation-delay:1.2s;animation-duration:2.2s}
+
+/* ── Section Titles ── */
+.section-title{font-size:clamp(1.4rem,3vw,1.8rem);font-weight:700;color:#fff;margin-bottom:8px}
+.section-desc{color:#a09890;margin-bottom:32px;max-width:600px}
+
+/* ── Component Explorer ── */
+.explorer-layout{display:grid;grid-template-columns:1fr 320px;gap:32px;align-items:start}
+.explorer-svg-wrap{background:var(--card);border-radius:16px;padding:24px;box-shadow:var(--shadow)}
+.explorer-svg-wrap svg{width:100%}
+.detail-panel{background:var(--card);border-radius:16px;padding:24px;box-shadow:var(--shadow);color:var(--card-text);min-height:300px;position:sticky;top:80px;transition:opacity .3s}
+.detail-panel h3{font-size:1.1rem;color:var(--copper-dark);margin-bottom:4px}
+.detail-panel .role{font-size:.85rem;color:#6b6560;margin-bottom:16px;font-style:italic}
+.detail-panel .spec-grid{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:.82rem;margin-bottom:16px}
+.detail-panel .spec-grid dt{font-weight:600;color:#5a554f}
+.detail-panel .spec-grid dd{color:#3d3832}
+.detail-panel .failure{background:#fff3ee;border-left:3px solid var(--copper);padding:8px 12px;border-radius:0 8px 8px 0;font-size:.82rem;color:#5a3a2a;margin-top:8px}
+.detail-panel .failure strong{display:block;font-size:.75rem;text-transform:uppercase;letter-spacing:.04em;color:var(--copper);margin-bottom:2px}
+.detail-panel .prompt{color:#9a9490;font-size:.85rem;text-align:center;margin-top:40px}
+
+/* SVG component styling */
+.comp-group{cursor:pointer;transition:opacity .2s}
+.comp-group:hover .comp-fill{filter:brightness(1.15)}
+.comp-group:hover .comp-label{opacity:1}
+.comp-group.active .comp-fill{filter:brightness(1.15);stroke:var(--copper);stroke-width:2}
+.comp-label{font-size:9px;fill:#5a554f;font-weight:600;opacity:.7;transition:opacity .2s;pointer-events:none}
+.comp-group:hover .comp-label{opacity:1}
+.leader-line{stroke:#999;stroke-width:.5;stroke-dasharray:2 2;opacity:.5}
+
+/* ── Water Flow ── */
+.flow-controls{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.flow-btn{padding:8px 20px;border-radius:8px;font-size:.85rem;font-weight:600;background:rgba(255,255,255,.08);color:#a09890;transition:all .2s;border:1px solid transparent}
+.flow-btn:hover{background:rgba(255,255,255,.12);color:#ccc}
+.flow-btn.active{background:var(--teal);color:#fff;border-color:var(--teal-light)}
+.flow-btn.active[data-mode="steam"]{background:var(--steam);border-color:var(--steam-light);color:#2d2a26}
+.flow-btn.active[data-mode="backflush"]{background:var(--copper);border-color:var(--copper-light)}
+.flow-diagram{background:var(--card);border-radius:16px;padding:32px;box-shadow:var(--shadow)}
+.flow-diagram svg{width:100%}
+.flow-node{cursor:pointer}
+.flow-node text{font-size:11px;fill:var(--card-text);font-weight:600}
+.flow-node rect,.flow-node circle{transition:fill .3s,stroke .3s}
+.flow-popup{position:absolute;background:#2d2a26;color:#e8e0d8;padding:12px 16px;border-radius:10px;font-size:.82rem;max-width:240px;box-shadow:0 8px 32px rgba(0,0,0,.4);pointer-events:none;opacity:0;transition:opacity .2s;z-index:100;line-height:1.5}
+.flow-popup.show{opacity:1}
+.flow-popup::after{content:'';position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);border-left:6px solid transparent;border-right:6px solid transparent;border-top:6px solid #2d2a26}
+.flow-btn.active[data-mode="hotwater"]{background:var(--teal-light);color:#1a1a1a;border-color:#2b7a78}
+.steam-guide{background:var(--card);border-radius:14px;padding:20px 24px;box-shadow:var(--shadow);color:var(--card-text);margin-top:24px;cursor:pointer;transition:box-shadow .2s}
+.steam-guide:hover{box-shadow:0 8px 32px rgba(0,0,0,.3)}
+.steam-guide-header{display:flex;align-items:center;gap:12px;font-weight:700;font-size:1rem}
+.steam-guide-header .icon{width:36px;height:36px;border-radius:8px;background:#fef3e8;color:var(--steam);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.steam-guide-steps{max-height:0;overflow:hidden;transition:max-height .5s ease}
+.steam-guide.expanded .steam-guide-steps{max-height:600px}
+.steam-guide-steps ol{padding-left:20px;margin-top:14px;font-size:.84rem;line-height:1.7;color:#5a554f}
+.steam-guide-steps li{margin-bottom:8px}
+.steam-guide-steps li strong{color:var(--card-text)}
+.steam-guide-expand{font-size:.72rem;color:#bbb;margin-top:8px;text-align:right}
+.particle{fill:var(--teal-light);opacity:.8}
+.particle-steam{fill:var(--steam)}
+
+/* ── Electrical ── */
+.elec-controls{display:flex;gap:8px;margin-bottom:20px}
+.elec-btn{padding:8px 20px;border-radius:8px;font-size:.85rem;font-weight:600;background:rgba(255,255,255,.08);color:#a09890;transition:all .2s;border:1px solid transparent}
+.elec-btn:hover{background:rgba(255,255,255,.12);color:#ccc}
+.elec-btn.active{background:var(--copper);color:#fff;border-color:var(--copper-light)}
+.elec-diagram{background:var(--card);border-radius:16px;padding:32px;box-shadow:var(--shadow)}
+.elec-diagram svg{width:100%}
+.wire{stroke-width:2.5;fill:none;stroke-linecap:round;transition:opacity .4s,stroke .4s}
+.wire-live{stroke:var(--wire-live)}
+.wire-neutral{stroke:var(--wire-neutral)}
+.wire-ground{stroke:var(--wire-ground)}
+.wire-bypass{stroke:var(--wire-neutral);stroke-dasharray:6 4}
+.wire.dimmed{opacity:.15}
+.wire.highlighted{opacity:1;filter:brightness(1.3)}
+@keyframes dash-flow{to{stroke-dashoffset:-20}}
+.wire.flowing{animation:dash-flow .8s linear infinite;stroke-dasharray:8 4}
+.elec-label{font-size:9px;font-weight:600}
+.elec-component{transition:opacity .4s}
+.elec-component.dimmed{opacity:.25}
+.elec-explanation{font-size:.82rem;color:var(--card-text);max-width:700px;margin-top:16px;line-height:1.6;padding:0 4px}
+
+/* ── Temperature ── */
+.temp-container{background:var(--card);border-radius:16px;padding:24px;box-shadow:var(--shadow)}
+.temp-canvas-wrap{position:relative;width:100%;aspect-ratio:2.2/1;margin-bottom:16px}
+#tempCanvas{width:100%;height:100%;border-radius:8px}
+.temp-controls{display:flex;gap:8px;flex-wrap:wrap}
+.temp-btn{padding:8px 18px;border-radius:8px;font-size:.82rem;font-weight:600;transition:all .2s;border:1px solid transparent}
+.temp-btn.heat{background:var(--copper);color:#fff}
+.temp-btn.heat:hover{background:var(--copper-dark)}
+.temp-btn.heat.active{background:var(--danger);border-color:#e74c3c}
+.temp-btn.brew{background:var(--teal);color:#fff}
+.temp-btn.brew:hover{background:#1f6f6d}
+.temp-btn.brew:disabled{opacity:.4;cursor:not-allowed}
+.temp-btn.steam-toggle{background:var(--steam);color:#2d2a26}
+.temp-btn.steam-toggle.active{background:#c0903a;border-color:var(--steam)}
+.temp-btn.surf{background:rgba(255,255,255,.85);color:var(--card-text);border:1px solid #ddd}
+.temp-btn.surf:hover{background:#fff}
+.temp-btn.surf.active{border-color:var(--copper);background:#fff}
+.temp-info{display:flex;gap:16px;margin-top:12px;flex-wrap:wrap}
+.temp-readout{font-family:'JetBrains Mono',monospace;font-size:1.3rem;color:var(--card-text);font-weight:500}
+.temp-readout span{font-size:.7rem;color:#9a9490;display:block;font-weight:400}
+.temp-annotation{position:absolute;background:#2d2a26;color:#e8e0d8;padding:6px 10px;border-radius:6px;font-size:.75rem;pointer-events:none;white-space:nowrap;opacity:0;transition:opacity .4s;z-index:10}
+.temp-annotation.show{opacity:1}
+
+/* ── Mods ── */
+.mods-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.mod-card{background:var(--card);border-radius:14px;padding:20px;box-shadow:var(--shadow);color:var(--card-text);cursor:pointer;transition:transform .2s,box-shadow .2s}
+.mod-card:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.3)}
+.mod-header{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.mod-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.mod-icon.pid{background:#e8f0fe;color:#1a73e8}
+.mod-icon.opv{background:#fef3e8;color:var(--copper)}
+.mod-icon.ims{background:#e8f5e9;color:#2e7d32}
+.mod-icon.pre{background:#f3e8fe;color:#7b1fa2}
+.mod-icon.gauge{background:#fff8e1;color:#f57f17}
+.mod-icon.block{background:#e0f2f1;color:var(--teal)}
+.mod-name{font-weight:700;font-size:.95rem}
+.mod-difficulty{font-size:.75rem;color:#9a9490;margin-top:2px}
+.mod-desc{font-size:.84rem;color:#5a554f;line-height:1.5}
+.mod-details{max-height:0;overflow:hidden;transition:max-height .4s ease;font-size:.82rem;color:#5a554f;line-height:1.6}
+.mod-card.expanded .mod-details{max-height:400px}
+.mod-details-inner{padding-top:12px;border-top:1px solid #e0dbd5;margin-top:12px}
+.mod-details-inner ul{padding-left:18px;margin-top:6px}
+.mod-details-inner li{margin-bottom:4px}
+.mod-expand-hint{font-size:.72rem;color:#bbb;margin-top:8px;text-align:right}
+.mod-link,.help-link{display:inline-block;margin-top:10px;font-size:.78rem;color:var(--copper);font-weight:600;text-decoration:none;transition:color .2s}
+.mod-link:hover,.help-link:hover{color:var(--copper-dark);text-decoration:underline}
+.mod-link::after,.help-link::after{content:' \2197';font-size:.7rem;opacity:.6}
+
+/* ── References ── */
+.ref-category{margin-bottom:28px}
+.ref-category h3{font-size:.95rem;color:var(--copper);margin-bottom:12px;text-transform:uppercase;letter-spacing:.06em;font-weight:700}
+.ref-links{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
+.ref-card{background:var(--card);border-radius:10px;padding:14px 18px;box-shadow:0 2px 12px rgba(0,0,0,.15);transition:transform .2s}
+.ref-card:hover{transform:translateY(-1px)}
+.ref-card a{font-weight:600;font-size:.88rem;color:var(--copper-dark);text-decoration:none}
+.ref-card a:hover{text-decoration:underline}
+.ref-card p{font-size:.78rem;color:#7a756f;margin-top:4px;line-height:1.4}
+
+/* ── Responsive ── */
+@media(max-width:768px){
+  .explorer-layout{grid-template-columns:1fr}
+  .detail-panel{position:static}
+  nav .links{display:none}
+  .hamburger{display:flex}
+  .mods-grid{grid-template-columns:1fr}
+  .ref-links{grid-template-columns:1fr}
+  .temp-controls{flex-direction:column}
+  .temp-controls .temp-btn{width:100%}
+  .flow-controls{flex-direction:column}
+  .flow-controls .flow-btn{width:100%}
+  section{padding:48px 0}
+}
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .flow-diagram,.elec-diagram,.explorer-svg-wrap,.temp-container{padding:16px}
+}
+
+/* ── Utility ── */
+.fade-child>*{opacity:0;transform:translateY(16px);transition:opacity .5s ease,transform .5s ease}
+.fade-child.visible>*:nth-child(1){transition-delay:0s}
+.fade-child.visible>*:nth-child(2){transition-delay:.1s}
+.fade-child.visible>*:nth-child(3){transition-delay:.15s}
+.fade-child.visible>*:nth-child(4){transition-delay:.2s}
+.fade-child.visible>*{opacity:1;transform:translateY(0)}
+footer{text-align:center;padding:40px 24px;color:#5a554f;font-size:.78rem}
+footer a{color:var(--copper)}
+</style>
+</head>
+<body>
+
+<!-- ════════════ Navigation ════════════ -->
+<nav>
+  <div class="container">
+    <div class="logo">Rancilio Silvia</div>
+    <div class="links">
+      <a href="#hero">Home</a>
+      <a href="#components">Components</a>
+      <a href="#water-flow">Water Flow</a>
+      <a href="#electrical">Electrical</a>
+      <a href="#temperature">Temperature</a>
+      <a href="#mods">Mods</a>
+      <a href="#references">Sources</a>
+    </div>
+    <div class="hamburger" onclick="toggleMobile()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#hero" onclick="closeMobile()">Home</a>
+  <a href="#components" onclick="closeMobile()">Components</a>
+  <a href="#water-flow" onclick="closeMobile()">Water Flow</a>
+  <a href="#electrical" onclick="closeMobile()">Electrical</a>
+  <a href="#temperature" onclick="closeMobile()">Temperature</a>
+  <a href="#mods" onclick="closeMobile()">Mods</a>
+  <a href="#references" onclick="closeMobile()">Sources</a>
+</div>
+
+<!-- ════════════ Hero ════════════ -->
+<section id="hero">
+  <div class="container" style="display:flex;flex-direction:column;align-items:center">
+    <svg class="hero-machine" viewBox="0 0 260 310" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Steam particles rising from cup warmer -->
+      <g class="steam-particle"><ellipse cx="160" cy="42" rx="6" ry="3" fill="#d4a373" opacity=".5"/></g>
+      <g class="steam-particle"><ellipse cx="168" cy="36" rx="5" ry="2.5" fill="#d4a373" opacity=".4"/></g>
+      <g class="steam-particle"><ellipse cx="152" cy="39" rx="4" ry="2" fill="#d4a373" opacity=".3"/></g>
+
+      <!-- Machine body — wider Silvia proportions -->
+      <rect x="30" y="55" width="170" height="190" rx="5" fill="#3a3632" stroke="#5a554f" stroke-width="1.5"/>
+
+      <!-- Top panel / cup warmer -->
+      <rect x="30" y="55" width="170" height="32" rx="5" fill="#4a4440"/>
+      <rect x="30" y="79" width="170" height="8" fill="#4a4440"/>
+      <!-- Cup warmer rail slots -->
+      <line x1="50" y1="63" x2="180" y2="63" stroke="#5a554f" stroke-width=".8"/>
+      <line x1="50" y1="70" x2="180" y2="70" stroke="#5a554f" stroke-width=".8"/>
+      <line x1="50" y1="77" x2="180" y2="77" stroke="#5a554f" stroke-width=".8"/>
+
+      <!-- Front panel recessed area -->
+      <rect x="42" y="95" width="146" height="120" rx="3" fill="#353230" stroke="#4a4440" stroke-width="1"/>
+
+      <!-- Power indicator LED -->
+      <circle cx="115" cy="108" r="3.5" fill="#c45e3a" opacity=".85"/>
+      <circle cx="115" cy="108" r="5" fill="none" stroke="#c45e3a" stroke-width=".5" opacity=".3"/>
+
+      <!-- Three rocker switches in a row (power, brew, steam) -->
+      <rect x="72" y="120" width="16" height="24" rx="2.5" fill="#555" stroke="#6a6560" stroke-width="1"/>
+      <rect x="72" y="120" width="16" height="12" rx="2.5" fill="#606060"/>
+      <rect x="97" y="120" width="16" height="24" rx="2.5" fill="#555" stroke="#6a6560" stroke-width="1"/>
+      <rect x="97" y="120" width="16" height="12" rx="2.5" fill="#606060"/>
+      <rect x="122" y="120" width="16" height="24" rx="2.5" fill="#555" stroke="#6a6560" stroke-width="1"/>
+      <rect x="122" y="120" width="16" height="12" rx="2.5" fill="#606060"/>
+
+      <!-- Switch labels -->
+      <text x="80" y="154" text-anchor="middle" font-size="5" fill="#666" font-family="Inter,sans-serif">PWR</text>
+      <text x="105" y="154" text-anchor="middle" font-size="5" fill="#666" font-family="Inter,sans-serif">BREW</text>
+      <text x="130" y="154" text-anchor="middle" font-size="5" fill="#666" font-family="Inter,sans-serif">STM</text>
+
+      <!-- SILVIA badge -->
+      <text x="115" y="175" text-anchor="middle" font-size="10" fill="#8a857f" font-weight="700" font-family="Inter,sans-serif" letter-spacing=".15em">SILVIA</text>
+
+      <!-- E61-style group head -->
+      <rect x="82" y="215" width="50" height="16" rx="3" fill="#4a4440" stroke="#5a554f" stroke-width="1"/>
+      <circle cx="107" cy="223" r="6" fill="#3a3632" stroke="#5a554f" stroke-width="1"/>
+      <!-- Group head collar -->
+      <rect x="78" y="230" width="58" height="6" rx="2" fill="#555" stroke="#6a6560" stroke-width=".8"/>
+
+      <!-- Portafilter -->
+      <path d="M82 236 L132 236 L142 256 Q107 266 72 256 Z" fill="#4a4440" stroke="#5a554f" stroke-width="1"/>
+      <!-- Portafilter handle -->
+      <path d="M72 256 Q60 260 50 256 L38 250" stroke="#5a554f" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <circle cx="36" cy="249" r="3" fill="#4a4440" stroke="#5a554f"/>
+      <!-- Portafilter spout -->
+      <line x1="107" y1="260" x2="107" y2="268" stroke="#5a554f" stroke-width="1.5"/>
+
+      <!-- Steam knob (right side, prominent) -->
+      <circle cx="210" cy="145" r="14" fill="#4a4440" stroke="#5a554f" stroke-width="1.5"/>
+      <circle cx="210" cy="145" r="9" fill="#555" stroke="#6a6560" stroke-width="1"/>
+      <line x1="210" y1="138" x2="210" y2="145" stroke="#777" stroke-width="1.5" stroke-linecap="round"/>
+
+      <!-- Steam wand -->
+      <path d="M200 160 Q205 170 206 190 L206 230 Q206 238 200 242" stroke="#777" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <circle cx="198" cy="244" r="2.5" fill="#666"/>
+
+      <!-- Drip tray with grate pattern -->
+      <rect x="40" y="270" width="150" height="12" rx="2" fill="#2d2a26" stroke="#5a554f" stroke-width="1"/>
+      <!-- Grate lines -->
+      <line x1="55" y1="273" x2="55" y2="279" stroke="#3a3632" stroke-width=".6"/>
+      <line x1="65" y1="273" x2="65" y2="279" stroke="#3a3632" stroke-width=".6"/>
+      <line x1="75" y1="273" x2="75" y2="279" stroke="#3a3632" stroke-width=".6"/>
+      <line x1="85" y1="273" x2="85" y2="279" stroke="#3a3632" stroke-width=".6"/>
+      <line x1="95" y1="273" x2="95" y2="279" stroke="#3a3632" stroke-width=".6"/>
+      <line x1="105" y1="273" x2="105" y2="279" stroke="#3a3632" stroke-width=".6"/>
+      <line x1="115" y1="273" x2="115" y2="279" stroke="#3a3632" stroke-width=".6"/>
+      <line x1="125" y1="273" x2="125" y2="279" stroke="#3a3632" stroke-width=".6"/>
+      <line x1="135" y1="273" x2="135" y2="279" stroke="#3a3632" stroke-width=".6"/>
+      <line x1="145" y1="273" x2="145" y2="279" stroke="#3a3632" stroke-width=".6"/>
+      <line x1="155" y1="273" x2="155" y2="279" stroke="#3a3632" stroke-width=".6"/>
+      <line x1="165" y1="273" x2="165" y2="279" stroke="#3a3632" stroke-width=".6"/>
+      <line x1="175" y1="273" x2="175" y2="279" stroke="#3a3632" stroke-width=".6"/>
+
+      <!-- Base -->
+      <rect x="26" y="282" width="178" height="8" rx="3" fill="#2d2a26"/>
+    </svg>
+    <h1>Inside the Rancilio Silvia</h1>
+    <p class="subtitle">An interactive guide to understanding your espresso machine</p>
+    <div class="scroll-arrow">&#8595;</div>
+  </div>
+</section>
+
+<!-- ════════════ Component Explorer ════════════ -->
+<section id="components">
+  <div class="container">
+    <h2 class="section-title">Component Explorer</h2>
+    <p class="section-desc">Click any component in the cross-section to learn about its role, specs, and common failure points.</p>
+    <div class="explorer-layout">
+      <div class="explorer-svg-wrap">
+        <svg id="componentSvg" viewBox="0 0 560 520" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Machine outer shell -->
+          <rect x="60" y="30" width="440" height="440" rx="12" fill="#e8e2dc" stroke="#c4bdb5" stroke-width="1.5"/>
+          <rect x="60" y="30" width="440" height="60" rx="12" fill="#ddd6ce" stroke="#c4bdb5" stroke-width="1"/>
+          <rect x="60" y="78" width="440" height="12" fill="#ddd6ce"/>
+
+          <!-- Water Tank (right side, rear) -->
+          <g class="comp-group" data-component="tank">
+            <rect class="comp-fill" x="380" y="110" width="80" height="200" rx="6" fill="#d0e8f0" stroke="#7eb8cc" stroke-width="1.5"/>
+            <rect x="390" y="120" width="60" height="170" rx="3" fill="#b8dce8" opacity=".5"/>
+            <!-- Water level lines -->
+            <line x1="395" y1="160" x2="445" y2="160" stroke="#7eb8cc" stroke-width=".5" opacity=".5"/>
+            <line x1="395" y1="200" x2="445" y2="200" stroke="#7eb8cc" stroke-width=".5" opacity=".5"/>
+            <line x1="395" y1="240" x2="445" y2="240" stroke="#7eb8cc" stroke-width=".5" opacity=".5"/>
+            <text class="comp-label" x="420" y="330" text-anchor="middle">WATER TANK</text>
+          </g>
+
+          <!-- Pump (lower center) -->
+          <g class="comp-group" data-component="pump">
+            <rect class="comp-fill" x="230" y="360" width="80" height="50" rx="8" fill="#a8a098" stroke="#8a837b" stroke-width="1.5"/>
+            <circle cx="270" cy="385" r="15" fill="#908880" stroke="#7a736b"/>
+            <circle cx="270" cy="385" r="6" fill="#a8a098"/>
+            <text class="comp-label" x="270" y="425" text-anchor="middle">VIBRATORY PUMP</text>
+          </g>
+
+          <!-- OPV (between pump and boiler) -->
+          <g class="comp-group" data-component="opv">
+            <rect class="comp-fill" x="170" y="365" width="45" height="40" rx="5" fill="#c4a882" stroke="#a89068" stroke-width="1.5"/>
+            <path d="M192 375 L192 395" stroke="#8a7a60" stroke-width="2"/>
+            <path d="M185 385 L200 385" stroke="#8a7a60" stroke-width="2"/>
+            <text class="comp-label" x="192" y="420" text-anchor="middle">OPV</text>
+          </g>
+
+          <!-- Boiler (center, large) -->
+          <g class="comp-group" data-component="boiler">
+            <rect class="comp-fill" x="130" y="150" width="170" height="120" rx="16" fill="#c9b8a0" stroke="#a89878" stroke-width="2"/>
+            <!-- Internal water -->
+            <rect x="140" y="200" width="150" height="60" rx="8" fill="#b8dce8" opacity=".3"/>
+            <text class="comp-label" x="215" y="290" text-anchor="middle">BRASS BOILER (300ml)</text>
+          </g>
+
+          <!-- Heating Element (inside boiler) -->
+          <g class="comp-group" data-component="element">
+            <path class="comp-fill" d="M155 245 Q175 230 195 245 Q215 260 235 245 Q255 230 275 245" stroke="#c45e3a" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <text class="comp-label" x="215" y="268" text-anchor="middle" fill="#c45e3a">HEATING ELEMENT</text>
+          </g>
+
+          <!-- Thermostats (on boiler, top) -->
+          <g class="comp-group" data-component="thermostats">
+            <circle class="comp-fill" cx="170" cy="155" r="14" fill="#e0d8cc" stroke="#a89878" stroke-width="1.5"/>
+            <text x="170" y="158" text-anchor="middle" font-size="7" fill="#6b6050" font-weight="600">B</text>
+            <circle class="comp-fill" cx="220" cy="155" r="14" fill="#e0d8cc" stroke="#a89878" stroke-width="1.5"/>
+            <text x="220" y="158" text-anchor="middle" font-size="7" fill="#6b6050" font-weight="600">S</text>
+            <circle class="comp-fill" cx="270" cy="155" r="10" fill="#f0e0d0" stroke="#c0392b" stroke-width="1.5"/>
+            <text x="270" y="158" text-anchor="middle" font-size="5" fill="#c0392b" font-weight="700">!</text>
+            <text class="comp-label" x="220" y="132" text-anchor="middle">THERMOSTATS (Brew / Steam / Safety)</text>
+          </g>
+
+          <!-- Solenoid Valve (above group head) -->
+          <g class="comp-group" data-component="solenoid">
+            <rect class="comp-fill" x="140" y="300" width="60" height="35" rx="6" fill="#a0b0a8" stroke="#7a8a80" stroke-width="1.5"/>
+            <circle cx="170" cy="317" r="8" fill="#8a9a90" stroke="#6a7a70"/>
+            <path d="M162 317 L178 317 M170 309 L170 325" stroke="#5a6a60" stroke-width="1.5"/>
+            <text class="comp-label" x="170" y="350" text-anchor="middle">3-WAY SOLENOID</text>
+          </g>
+
+          <!-- Group Head (bottom center) -->
+          <g class="comp-group" data-component="grouphead">
+            <path class="comp-fill" d="M130 415 L130 440 Q130 455 145 455 L225 455 Q240 455 240 440 L240 415 Z" fill="#b0a898" stroke="#908878" stroke-width="1.5"/>
+            <rect x="155" y="400" width="60" height="20" rx="4" fill="#a09888" stroke="#908878"/>
+            <!-- Shower screen -->
+            <line x1="160" y1="440" x2="210" y2="440" stroke="#908878" stroke-dasharray="3 2"/>
+            <text class="comp-label" x="185" y="475" text-anchor="middle">GROUP HEAD (E61-style)</text>
+          </g>
+
+          <!-- Portafilter -->
+          <g class="comp-group" data-component="portafilter">
+            <path class="comp-fill" d="M150 458 L220 458 L235 488 Q185 500 135 488 Z" fill="#a09080" stroke="#887868" stroke-width="1.5"/>
+            <line x1="185" y1="490" x2="185" y2="508" stroke="#887868" stroke-width="2"/>
+            <text class="comp-label" x="185" y="518" text-anchor="middle">PORTAFILTER</text>
+          </g>
+
+          <!-- Steam Wand (right side) -->
+          <g class="comp-group" data-component="steamwand">
+            <path class="comp-fill" d="M330 170 Q360 165 365 180 L365 280 Q365 290 358 295" stroke="#b0a898" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+            <circle cx="355" cy="298" r="5" fill="#a09888" stroke="#908878"/>
+            <!-- Steam knob -->
+            <circle cx="345" cy="165" r="10" fill="#c4bdb5" stroke="#a09888" stroke-width="1.5"/>
+            <text class="comp-label" x="380" y="240" text-anchor="start">STEAM WAND</text>
+          </g>
+
+          <!-- Connection lines (plumbing) -->
+          <line class="leader-line" x1="380" y1="260" x2="310" y2="370" />
+          <line class="leader-line" x1="230" y1="385" x2="215" y2="385" />
+          <line class="leader-line" x1="192" y1="365" x2="215" y2="270" />
+          <line class="leader-line" x1="215" y1="270" x2="170" y2="335" />
+          <line class="leader-line" x1="170" y1="335" x2="185" y2="400" />
+        </svg>
+      </div>
+
+      <div class="detail-panel" id="detailPanel">
+        <p class="prompt">Select a component to view details</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ Water Flow ════════════ -->
+<section id="water-flow">
+  <div class="container">
+    <h2 class="section-title">Water Flow Path</h2>
+    <p class="section-desc">See how water moves through the machine in different modes. Click a node for details.</p>
+    <div class="flow-controls">
+      <button class="flow-btn active" data-mode="brew" onclick="setFlowMode('brew')">Brew</button>
+      <button class="flow-btn" data-mode="steam" onclick="setFlowMode('steam')">Steam</button>
+      <button class="flow-btn" data-mode="backflush" onclick="setFlowMode('backflush')">Backflush</button>
+      <button class="flow-btn" data-mode="hotwater" onclick="setFlowMode('hotwater')">Hot Water</button>
+    </div>
+    <div class="flow-diagram" style="position:relative">
+      <svg id="flowSvg" viewBox="0 0 800 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Flow paths (drawn first, behind nodes) -->
+        <!-- Tank to Pump -->
+        <path id="pathTankPump" d="M130 80 L130 160 Q130 180 150 180 L220 180" stroke="#7eb8cc" stroke-width="3" fill="none" opacity=".3"/>
+        <!-- Pump to OPV -->
+        <path id="pathPumpOPV" d="M300 180 L370 180" stroke="#7eb8cc" stroke-width="3" fill="none" opacity=".3"/>
+        <!-- OPV to Boiler -->
+        <path id="pathOPVBoiler" d="M440 180 L510 180" stroke="#7eb8cc" stroke-width="3" fill="none" opacity=".3"/>
+        <!-- OPV return to Tank -->
+        <path id="pathOPVReturn" d="M405 155 L405 80 L130 80" stroke="#c45e3a" stroke-width="2" fill="none" stroke-dasharray="4 3" opacity=".2"/>
+        <!-- Boiler to Solenoid -->
+        <path id="pathBoilerSolenoid" d="M590 180 L650 180" stroke="#7eb8cc" stroke-width="3" fill="none" opacity=".3"/>
+        <!-- Solenoid to Group Head -->
+        <path id="pathSolenoidGroup" d="M690 205 L690 270 Q690 290 670 290 L600 290" stroke="#7eb8cc" stroke-width="3" fill="none" opacity=".3"/>
+        <!-- Group to Portafilter (drip) -->
+        <path id="pathGroupPorta" d="M560 290 L490 290" stroke="#7eb8cc" stroke-width="3" fill="none" opacity=".3"/>
+        <!-- Solenoid drain (backflush) -->
+        <path id="pathSolenoidDrain" d="M690 155 L690 80 L740 80" stroke="#a09890" stroke-width="2" fill="none" stroke-dasharray="4 3" opacity=".15"/>
+        <!-- Steam path from boiler -->
+        <path id="pathBoilerSteam" d="M550 155 L550 60 Q550 40 530 40 L460 40" stroke="#d4a373" stroke-width="2.5" fill="none" opacity=".15"/>
+
+        <!-- Nodes -->
+        <!-- Water Tank -->
+        <g class="flow-node" data-node="tank" onclick="showFlowPopup(evt,'tank')">
+          <rect x="80" y="50" width="100" height="55" rx="8" fill="#d0e8f0" stroke="#7eb8cc" stroke-width="1.5"/>
+          <text x="130" y="73" text-anchor="middle" font-size="10" fill="#2b7a78" font-weight="700">WATER</text>
+          <text x="130" y="88" text-anchor="middle" font-size="10" fill="#2b7a78" font-weight="700">TANK</text>
+        </g>
+
+        <!-- Pump -->
+        <g class="flow-node" data-node="pump" onclick="showFlowPopup(evt,'pump')">
+          <rect x="220" y="155" width="80" height="50" rx="8" fill="#a8a098" stroke="#8a837b" stroke-width="1.5"/>
+          <text x="260" y="185" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">PUMP</text>
+        </g>
+
+        <!-- OPV -->
+        <g class="flow-node" data-node="opv" onclick="showFlowPopup(evt,'opv')">
+          <rect x="370" y="155" width="70" height="50" rx="8" fill="#c4a882" stroke="#a89068" stroke-width="1.5"/>
+          <text x="405" y="185" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">OPV</text>
+        </g>
+
+        <!-- Boiler -->
+        <g class="flow-node" data-node="boiler" onclick="showFlowPopup(evt,'boiler')">
+          <rect x="510" y="155" width="80" height="50" rx="10" fill="#c9b8a0" stroke="#a89878" stroke-width="1.5"/>
+          <text x="550" y="185" text-anchor="middle" font-size="10" fill="#3d3832" font-weight="700">BOILER</text>
+        </g>
+
+        <!-- Solenoid -->
+        <g class="flow-node" data-node="solenoid" onclick="showFlowPopup(evt,'solenoid')">
+          <rect x="650" y="155" width="80" height="50" rx="8" fill="#a0b0a8" stroke="#7a8a80" stroke-width="1.5"/>
+          <text x="690" y="178" text-anchor="middle" font-size="9" fill="#fff" font-weight="700">3-WAY</text>
+          <text x="690" y="192" text-anchor="middle" font-size="9" fill="#fff" font-weight="700">VALVE</text>
+        </g>
+
+        <!-- Group Head -->
+        <g class="flow-node" data-node="grouphead" onclick="showFlowPopup(evt,'grouphead')">
+          <rect x="560" y="265" width="80" height="50" rx="8" fill="#b0a898" stroke="#908878" stroke-width="1.5"/>
+          <text x="600" y="288" text-anchor="middle" font-size="9" fill="#fff" font-weight="700">GROUP</text>
+          <text x="600" y="302" text-anchor="middle" font-size="9" fill="#fff" font-weight="700">HEAD</text>
+        </g>
+
+        <!-- Portafilter / Cup -->
+        <g class="flow-node" data-node="portafilter" onclick="showFlowPopup(evt,'portafilter')">
+          <rect x="450" y="265" width="80" height="50" rx="8" fill="#a09080" stroke="#887868" stroke-width="1.5"/>
+          <text x="490" y="295" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">CUP</text>
+        </g>
+
+        <!-- Steam Wand -->
+        <g class="flow-node" data-node="steamwand" onclick="showFlowPopup(evt,'steamwand')">
+          <rect x="410" y="20" width="90" height="45" rx="8" fill="#d4a373" stroke="#b88a55" stroke-width="1.5"/>
+          <text x="455" y="40" text-anchor="middle" font-size="9" fill="#3d3832" font-weight="700">STEAM</text>
+          <text x="455" y="53" text-anchor="middle" font-size="9" fill="#3d3832" font-weight="700">WAND</text>
+        </g>
+
+        <!-- Drain (backflush) -->
+        <g class="flow-node" data-node="drain" onclick="showFlowPopup(evt,'drain')" opacity=".4">
+          <rect x="740" y="60" width="50" height="40" rx="6" fill="#666" stroke="#555" stroke-width="1"/>
+          <text x="765" y="84" text-anchor="middle" font-size="8" fill="#bbb" font-weight="600">DRAIN</text>
+        </g>
+
+        <!-- Particle container -->
+        <g id="flowParticles"></g>
+      </svg>
+      <div class="flow-popup" id="flowPopup"></div>
+    </div>
+
+    <div class="steam-guide" onclick="this.classList.toggle('expanded')">
+      <div class="steam-guide-header">
+        <div class="icon">&#9832;</div>
+        Steam Wand Technique Guide
+      </div>
+      <div class="steam-guide-steps">
+        <ol>
+          <li><strong>Preparation:</strong> Fill pitcher 1/3 with cold milk. Purge wand briefly to clear condensation.</li>
+          <li><strong>Positioning:</strong> Submerge tip just below surface (~1cm). Angle pitcher for vortex spin.</li>
+          <li><strong>Stretching phase</strong> (first 3–5s): Keep tip at surface. Listen for "paper tearing" sound. This introduces air and creates foam volume.</li>
+          <li><strong>Texturing phase</strong> (remaining time): Submerge tip deeper. Spin milk in vortex to break large bubbles into microfoam.</li>
+          <li><strong>Temperature target:</strong> Stop at ~65°C (pitcher too hot to hold comfortably). Never exceed 70°C.</li>
+          <li><strong>Finishing:</strong> Turn off steam. Remove pitcher. Immediately purge wand and wipe with damp cloth.</li>
+          <li><strong>Tip:</strong> Remove Panarello attachment if present — bare wand produces better microfoam.</li>
+        </ol>
+      </div>
+      <div class="steam-guide-expand">Click to expand</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ Electrical System ════════════ -->
+<section id="electrical">
+  <div class="container">
+    <h2 class="section-title">Electrical System</h2>
+    <p class="section-desc">Trace the current path through switches and thermostats. Toggle between brew and steam modes to see how the bypass circuit works.</p>
+    <div class="elec-controls">
+      <button class="elec-btn active" data-mode="brew" onclick="setElecMode('brew')">Brew Mode</button>
+      <button class="elec-btn" data-mode="steam" onclick="setElecMode('steam')">Steam Mode</button>
+    </div>
+    <div class="elec-diagram">
+      <svg id="elecSvg" viewBox="0 0 800 350" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Power source -->
+        <g>
+          <rect x="20" y="140" width="60" height="60" rx="8" fill="#3d3832" stroke="#5a554f" stroke-width="1.5"/>
+          <text x="50" y="168" text-anchor="middle" font-size="9" fill="#e8e0d8" font-weight="700">MAINS</text>
+          <text x="50" y="182" text-anchor="middle" font-size="8" fill="#a09890">230V</text>
+        </g>
+
+        <!-- Power Switch -->
+        <g class="elec-component" data-ec="power-switch">
+          <rect x="140" y="130" width="60" height="35" rx="6" fill="#555" stroke="#777" stroke-width="1.5"/>
+          <text class="elec-label" x="170" y="152" text-anchor="middle" fill="#e8e0d8">POWER</text>
+          <rect x="140" y="170" width="60" height="25" rx="6" fill="#555" stroke="#777" stroke-width="1"/>
+          <text class="elec-label" x="170" y="186" text-anchor="middle" fill="#aaa" font-size="7">SWITCH</text>
+        </g>
+
+        <!-- Brew Switch -->
+        <g class="elec-component" data-ec="brew-switch">
+          <rect x="140" y="220" width="60" height="35" rx="6" fill="#555" stroke="#777" stroke-width="1.5"/>
+          <text class="elec-label" x="170" y="242" text-anchor="middle" fill="#e8e0d8">BREW</text>
+        </g>
+
+        <!-- Brew Thermostat -->
+        <g class="elec-component" data-ec="brew-thermo">
+          <circle cx="330" cy="148" r="22" fill="#e0d8cc" stroke="#a89878" stroke-width="2"/>
+          <text x="330" y="144" text-anchor="middle" font-size="8" fill="#5a554f" font-weight="700">BREW</text>
+          <text x="330" y="156" text-anchor="middle" font-size="7" fill="#7a756f">~100°C</text>
+          <!-- Temperature range indicator -->
+          <rect x="308" y="175" width="44" height="12" rx="3" fill="#e0f0e8" stroke="#8ab89a" stroke-width=".5"/>
+          <text x="330" y="184" text-anchor="middle" font-size="5.5" fill="#5a8a6a" font-weight="600">86-102°C</text>
+        </g>
+
+        <!-- Steam Thermostat -->
+        <g class="elec-component" data-ec="steam-thermo">
+          <circle cx="470" cy="148" r="22" fill="#e0d8cc" stroke="#a89878" stroke-width="2"/>
+          <text x="470" y="144" text-anchor="middle" font-size="8" fill="#5a554f" font-weight="700">STEAM</text>
+          <text x="470" y="156" text-anchor="middle" font-size="7" fill="#7a756f">~140°C</text>
+          <rect x="448" y="175" width="44" height="12" rx="3" fill="#fef0e0" stroke="#c4a060" stroke-width=".5"/>
+          <text x="470" y="184" text-anchor="middle" font-size="5.5" fill="#a88030" font-weight="600">130-145°C</text>
+        </g>
+
+        <!-- Safety Thermostat -->
+        <g class="elec-component" data-ec="safety-thermo">
+          <circle cx="470" cy="90" r="16" fill="#f5e5e0" stroke="#c0392b" stroke-width="2"/>
+          <text x="470" y="88" text-anchor="middle" font-size="6" fill="#c0392b" font-weight="700">SAFETY</text>
+          <text x="470" y="98" text-anchor="middle" font-size="5" fill="#c0392b">165°C</text>
+          <rect x="490" y="82" width="28" height="16" rx="3" fill="#e8d0d0" stroke="#c0392b" stroke-width=".5"/>
+          <text x="504" y="93" text-anchor="middle" font-size="5" fill="#c0392b" font-weight="600">RESET</text>
+        </g>
+
+        <!-- Heating Element -->
+        <g class="elec-component" data-ec="element">
+          <rect x="590" y="125" width="90" height="50" rx="10" fill="#c45e3a" stroke="#a04a2c" stroke-width="2"/>
+          <path d="M608 150 Q618 138 628 150 Q638 162 648 150 Q658 138 668 150" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <text x="635" y="165" text-anchor="middle" font-size="7" fill="#fff" font-weight="600">1100W</text>
+        </g>
+
+        <!-- Solenoid & Pump (on brew switch line) -->
+        <g class="elec-component" data-ec="solenoid-pump">
+          <rect x="330" y="218" width="90" height="35" rx="6" fill="#a0b0a8" stroke="#7a8a80" stroke-width="1.5"/>
+          <text x="375" y="240" text-anchor="middle" font-size="8" fill="#fff" font-weight="600">SOLENOID + PUMP</text>
+        </g>
+
+        <!-- Wires: Live path (Brew mode) -->
+        <!-- Mains to Power Switch -->
+        <path class="wire wire-live" id="wireMainsToSwitch" d="M80 155 L140 155"/>
+        <!-- Power Switch to Brew Thermostat -->
+        <path class="wire wire-live" id="wireSwitchToBrew" d="M200 148 L308 148"/>
+        <!-- Brew Thermostat to Steam Thermostat -->
+        <path class="wire wire-live" id="wireBrewToSteam" d="M352 148 L448 148"/>
+        <!-- Steam Thermostat to Element -->
+        <path class="wire wire-live" id="wireSteamToElement" d="M492 148 L590 148"/>
+        <!-- Element to Neutral return -->
+        <path class="wire wire-neutral" id="wireElementReturn" d="M680 150 L740 150 L740 300 L50 300 L50 200"/>
+        <!-- Neutral from mains -->
+        <path class="wire wire-neutral" id="wireNeutral" d="M50 200 L50 170"/>
+
+        <!-- Bypass wire (Steam mode activates) -->
+        <path class="wire wire-bypass dimmed" id="wireBypass" d="M260 148 Q260 100 330 100 Q448 100 448 148"/>
+
+        <!-- Brew switch wires -->
+        <path class="wire wire-live" id="wireToBrewSwitch" d="M170 195 L170 220"/>
+        <path class="wire wire-live" id="wireBrewSwitchOut" d="M200 238 L330 238"/>
+
+        <!-- Ground wire -->
+        <path class="wire wire-ground" id="wireGround" d="M50 300 L50 330 L740 330" stroke-dasharray="8 4" opacity=".4"/>
+        <text x="400" y="345" text-anchor="middle" font-size="7" fill="#6b8e4e" opacity=".6">GROUND / EARTH</text>
+
+        <!-- Wire labels -->
+        <text x="110" y="143" font-size="6" fill="#8b5e3c" opacity=".6">LIVE</text>
+        <text x="710" y="142" font-size="6" fill="#4a7ab5" opacity=".6">NEUTRAL</text>
+        <text x="280" y="92" font-size="6" fill="#4a7ab5" opacity=".5" id="bypassLabel" style="display:none">BYPASS</text>
+
+        <!-- Mode description -->
+        <text id="elecModeDesc" x="400" y="25" text-anchor="middle" font-size="10" fill="#a09890" font-weight="500">Brew Mode: Current flows through both thermostats in series to the heating element</text>
+      </svg>
+      <p class="elec-explanation" id="elecExplanation">In brew mode, current flows through both thermostats in series. Both thermostats are normally closed (conducting) at brew temperature (~96°C). The brew thermostat (86–102°C) is the active controller — it cycles the element on and off. The steam thermostat (130–145°C) stays closed and acts as a safety backup: if the brew thermostat failed closed, the steam thermostat would cut power before the boiler reaches dangerous temperatures.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ Temperature Dynamics ════════════ -->
+<section id="temperature">
+  <div class="container">
+    <h2 class="section-title">Temperature Dynamics</h2>
+    <p class="section-desc">Watch the boiler temperature cycle in real time. See how thermostats control heating and learn the temperature surfing technique.</p>
+    <div class="temp-container">
+      <div class="temp-canvas-wrap">
+        <canvas id="tempCanvas"></canvas>
+        <div class="temp-annotation" id="tempAnnotation"></div>
+      </div>
+      <div class="temp-controls">
+        <button class="temp-btn heat" id="btnHeat" onclick="toggleHeat()">Start Heating</button>
+        <button class="temp-btn brew" id="btnBrew" onclick="triggerBrew()" disabled>Pull Shot</button>
+        <button class="temp-btn steam-toggle" id="btnSteam" onclick="toggleSteamMode()">Steam Mode</button>
+        <button class="temp-btn surf" id="btnSurf" onclick="startSurf()">Temperature Surf Guide</button>
+      </div>
+      <div class="temp-info">
+        <div class="temp-readout"><span>Boiler Temp</span><span id="tempValue">20°C</span></div>
+        <div class="temp-readout"><span>Element</span><span id="elementState">OFF</span></div>
+        <div class="temp-readout"><span>Mode</span><span id="modeState">Idle</span></div>
+        <div class="temp-readout"><span>Sim Time</span><span id="simTimeValue">0s</span></div>
+        <div class="temp-readout"><span>Speed</span><span id="simSpeedValue">8× real-time</span></div>
+        <div class="temp-readout" id="shotTimerWrap" style="display:none"><span>Shot Timer</span><span id="shotTimerValue">0.0s</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ Mods & Upgrades ════════════ -->
+<section id="mods">
+  <div class="container">
+    <h2 class="section-title">Mods & Upgrades</h2>
+    <p class="section-desc">Popular modifications to improve consistency, control, and extraction quality. Click for details.</p>
+    <div class="mods-grid">
+
+      <div class="mod-card" onclick="this.classList.toggle('expanded')">
+        <div class="mod-header">
+          <div class="mod-icon pid">PID</div>
+          <div>
+            <div class="mod-name">PID Controller</div>
+            <div class="mod-difficulty">Difficulty: &#x1f527;&#x1f527;&#x1f527;</div>
+          </div>
+        </div>
+        <div class="mod-desc">Replaces the mechanical thermostat with a digital PID controller for precise temperature control within &plusmn;1&deg;C.</div>
+        <div class="mod-details">
+          <div class="mod-details-inner">
+            <ul>
+              <li>Eliminates temperature surfing — consistent shots every time</li>
+              <li>Typical setup: SSR relay, thermocouple/PT100 sensor, Arduino/ESP32</li>
+              <li>Open-source options: <strong>CleverCoffee</strong>, <strong>silvia-pi</strong>, <strong>Bleeding Edge Rancilio PID</strong></li>
+              <li>Can add features like shot timers, pre-infusion, pressure profiling</li>
+              <li>Reversible mod — original thermostats can be reinstalled</li>
+            </ul>
+            <a href="https://manual.clevercoffee.de/" target="_blank" rel="noopener" class="mod-link" onclick="event.stopPropagation()">CleverCoffee Manual</a>
+          </div>
+        </div>
+        <div class="mod-expand-hint">Click for details</div>
+      </div>
+
+      <div class="mod-card" onclick="this.classList.toggle('expanded')">
+        <div class="mod-header">
+          <div class="mod-icon opv">&#9877;</div>
+          <div>
+            <div class="mod-name">OPV Adjustment</div>
+            <div class="mod-difficulty">Difficulty: &#x1f527;&#x1f527;</div>
+          </div>
+        </div>
+        <div class="mod-desc">Reduce the over-pressure valve from the factory 12 bar to the ideal 9 bar for better extraction.</div>
+        <div class="mod-details">
+          <div class="mod-details-inner">
+            <ul>
+              <li><strong>V3+ models</strong>: External hex bolt adjustment — turn counterclockwise to reduce pressure</li>
+              <li><strong>V1/V2 models</strong>: Requires replacing the internal spring</li>
+              <li>Use a portafilter-mounted pressure gauge to dial in exactly 9 bar</li>
+              <li>Reduces channeling and sourness from over-extraction at high pressure</li>
+              <li>One of the highest-impact mods for shot quality</li>
+            </ul>
+            <a href="https://www.home-barista.com/espresso-machines/opv-over-pressure-valve-adjustment-rancilio-silvia-t67082.html" target="_blank" rel="noopener" class="mod-link" onclick="event.stopPropagation()">Home-Barista thread</a>
+          </div>
+        </div>
+        <div class="mod-expand-hint">Click for details</div>
+      </div>
+
+      <div class="mod-card" onclick="this.classList.toggle('expanded')">
+        <div class="mod-header">
+          <div class="mod-icon ims">&#9673;</div>
+          <div>
+            <div class="mod-name">IMS Shower Screen</div>
+            <div class="mod-difficulty">Difficulty: &#x1f527;</div>
+          </div>
+        </div>
+        <div class="mod-desc">Precision-etched shower screen for more even water distribution across the puck.</div>
+        <div class="mod-details">
+          <div class="mod-details-inner">
+            <ul>
+              <li>Drop-in replacement — unscrew old screen, screw in new one</li>
+              <li>IMS Nanotech or Competition series are popular choices</li>
+              <li>More uniform hole pattern vs. stamped factory screen</li>
+              <li>Easier to clean, less buildup over time</li>
+              <li>Best paired with an IMS precision basket</li>
+            </ul>
+            <a href="https://www.imsfiltri.com/" target="_blank" rel="noopener" class="mod-link" onclick="event.stopPropagation()">IMS Filtri official site</a>
+          </div>
+        </div>
+        <div class="mod-expand-hint">Click for details</div>
+      </div>
+
+      <div class="mod-card" onclick="this.classList.toggle('expanded')">
+        <div class="mod-header">
+          <div class="mod-icon pre">&#8767;</div>
+          <div>
+            <div class="mod-name">Pre-Infusion</div>
+            <div class="mod-difficulty">Difficulty: &#x1f527;&#x1f527;&#x1f527;</div>
+          </div>
+        </div>
+        <div class="mod-desc">Gently saturate the puck at low pressure before full extraction for better flavor clarity.</div>
+        <div class="mod-details">
+          <div class="mod-details-inner">
+            <ul>
+              <li><strong>Dimmer method</strong>: Inline dimmer on pump power reduces voltage (simple, &lt;$20)</li>
+              <li><strong>PID-based</strong>: Software-controlled PWM of the pump via SSR</li>
+              <li><strong>Manual</strong>: Quick on-off-on of the brew switch (free, but inconsistent)</li>
+              <li>Typical pre-infusion: 3-5 seconds at ~2 bar before ramping to 9 bar</li>
+              <li>Helps prevent channeling and improves extraction evenness</li>
+            </ul>
+            <a href="https://www.schneordesign.com/diy/diy-coffee/rancilio-silvia-pre-infusion/" target="_blank" rel="noopener" class="mod-link" onclick="event.stopPropagation()">Schneor Design guide</a>
+          </div>
+        </div>
+        <div class="mod-expand-hint">Click for details</div>
+      </div>
+
+      <div class="mod-card" onclick="this.classList.toggle('expanded')">
+        <div class="mod-header">
+          <div class="mod-icon gauge">&#9678;</div>
+          <div>
+            <div class="mod-name">Pressure Gauge</div>
+            <div class="mod-difficulty">Difficulty: &#x1f527;</div>
+          </div>
+        </div>
+        <div class="mod-desc">Portafilter-mounted gauge to measure actual brew pressure for OPV calibration.</div>
+        <div class="mod-details">
+          <div class="mod-details-inner">
+            <ul>
+              <li>Attaches to a blank or modified portafilter basket</li>
+              <li>Essential for OPV adjustment — shows live extraction pressure</li>
+              <li>Run pump with blank basket and gauge, adjust OPV until gauge reads 9 bar</li>
+              <li>Can also diagnose pump wear (if max pressure drops below 9 bar)</li>
+              <li>Available from espresso parts vendors (~$30-50)</li>
+            </ul>
+            <a href="https://www.espressoparts.com/" target="_blank" rel="noopener" class="mod-link" onclick="event.stopPropagation()">Espresso Parts vendor</a>
+          </div>
+        </div>
+        <div class="mod-expand-hint">Click for details</div>
+      </div>
+
+      <div class="mod-card" onclick="this.classList.toggle('expanded')">
+        <div class="mod-header">
+          <div class="mod-icon block">&#9638;</div>
+          <div>
+            <div class="mod-name">Dispersion Block Upgrade</div>
+            <div class="mod-difficulty">Difficulty: &#x1f527;&#x1f527;</div>
+          </div>
+        </div>
+        <div class="mod-desc">Stainless steel dispersion block for improved thermal stability and easier cleaning.</div>
+        <div class="mod-details">
+          <div class="mod-details-inner">
+            <ul>
+              <li>Replaces brass/aluminium dispersion block behind the shower screen</li>
+              <li>Stainless steel resists corrosion and mineral buildup</li>
+              <li>Flat bottom design allows gasket to seat more evenly</li>
+              <li>Some users report improved thermal consistency at the puck</li>
+              <li>Requires removing group head components — moderate disassembly</li>
+            </ul>
+            <a href="https://www.home-barista.com/espresso-machines/" target="_blank" rel="noopener" class="mod-link" onclick="event.stopPropagation()">Home-Barista discussion</a>
+          </div>
+        </div>
+        <div class="mod-expand-hint">Click for details</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ References & Sources ════════════ -->
+<section id="references">
+  <div class="container">
+    <h2 class="section-title">References & Sources</h2>
+    <p class="section-desc">Curated resources for deeper exploration of the Rancilio Silvia platform.</p>
+
+    <div class="ref-category">
+      <h3>Forums & Communities</h3>
+      <div class="ref-links">
+        <div class="ref-card">
+          <a href="https://www.home-barista.com/espresso-machines/" target="_blank" rel="noopener">Home-Barista.com</a>
+          <p>The largest espresso enthusiast forum. Extensive Silvia threads, mods, and troubleshooting.</p>
+        </div>
+        <div class="ref-card">
+          <a href="https://coffeeforums.co.uk/" target="_blank" rel="noopener">CoffeeForums.co.uk</a>
+          <p>UK-based coffee community with active Rancilio Silvia discussion and modding guides.</p>
+        </div>
+        <div class="ref-card">
+          <a href="https://www.reddit.com/r/espresso/" target="_blank" rel="noopener">r/espresso</a>
+          <p>Reddit community covering all things espresso — popular for Silvia modding questions.</p>
+        </div>
+        <div class="ref-card">
+          <a href="https://www.reddit.com/r/ranciliosilvia/" target="_blank" rel="noopener">r/ranciliosilvia</a>
+          <p>Dedicated Rancilio Silvia subreddit for mods, troubleshooting, and shot advice.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="ref-category">
+      <h3>Technical Resources</h3>
+      <div class="ref-links">
+        <div class="ref-card">
+          <a href="https://wesleye.github.io/rancilio-silvia/" target="_blank" rel="noopener">Wesley E. — Silvia Wiring Diagrams</a>
+          <p>Detailed electrical schematics and wiring diagrams for all Silvia versions.</p>
+        </div>
+        <div class="ref-card">
+          <a href="https://www.schneordesign.com/diy/diy-coffee/rancilio-silvia/" target="_blank" rel="noopener">Schneor Design — Mega-Mod Series</a>
+          <p>Comprehensive mod walkthrough series covering PID, OPV, pre-infusion, and more.</p>
+        </div>
+        <div class="ref-card">
+          <a href="https://www.swisswuff.ch/wordpress/?p=465" target="_blank" rel="noopener">Swiss Wuff — Temperature Surfing Study</a>
+          <p>In-depth thermal analysis of Silvia's temperature cycling with data and methodology.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="ref-category">
+      <h3>Open-Source Projects</h3>
+      <div class="ref-links">
+        <div class="ref-card">
+          <a href="https://manual.clevercoffee.de/" target="_blank" rel="noopener">CleverCoffee / Rancilio PID Manual</a>
+          <p>Full documentation for the open-source ESP32/Arduino PID system for Rancilio machines.</p>
+        </div>
+        <div class="ref-card">
+          <a href="https://github.com/brycesub/silvia-pi" target="_blank" rel="noopener">silvia-pi (GitHub)</a>
+          <p>Raspberry Pi-based PID controller with web interface for Rancilio Silvia.</p>
+        </div>
+        <div class="ref-card">
+          <a href="https://github.com/medlor/bleeding-edge-ranciliopid" target="_blank" rel="noopener">Bleeding Edge Rancilio PID (GitHub)</a>
+          <p>Advanced Arduino PID with shot timer, steam detection, and MQTT integration.</p>
+        </div>
+        <div class="ref-card">
+          <a href="https://gaggiuino.github.io/" target="_blank" rel="noopener">GaggiMate (Gaggiuino)</a>
+          <p>Open-source ESP32-based PID system originally for Gaggia, increasingly adapted for Rancilio Silvia machines. Full pressure profiling and flow control.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="ref-category">
+      <h3>Parts & Vendors</h3>
+      <div class="ref-links">
+        <div class="ref-card">
+          <a href="https://www.espressoparts.com/" target="_blank" rel="noopener">Espresso Parts</a>
+          <p>Replacement parts, gaskets, shower screens, and tools for Silvia maintenance.</p>
+        </div>
+        <div class="ref-card">
+          <a href="https://www.wholelattelove.com/" target="_blank" rel="noopener">Whole Latte Love</a>
+          <p>Parts, accessories, and detailed Silvia maintenance videos.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="ref-category">
+      <h3>Video Resources</h3>
+      <div class="ref-links">
+        <div class="ref-card">
+          <a href="https://www.youtube.com/results?search_query=rancilio+silvia+PID+mod" target="_blank" rel="noopener">Rancilio Silvia PID Mod Guides (YouTube)</a>
+          <p>Video walkthroughs of PID installation on various Silvia versions.</p>
+        </div>
+        <div class="ref-card">
+          <a href="https://www.youtube.com/results?search_query=rancilio+silvia+temperature+surfing" target="_blank" rel="noopener">Temperature Surfing Tutorials (YouTube)</a>
+          <p>Practical guides on timing your shots with Silvia's thermostat cycles.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Built with care for Silvia owners everywhere. Not affiliated with Rancilio Group.</p>
+  <p style="margin-top:4px">Content sourced from community forums, open-source projects, and technical documentation.</p>
+</footer>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- ═══════════════  JAVASCRIPT  ═══════════════ -->
+<!-- ════════════════════════════════════════════ -->
+<script>
+/* ── Navigation ── */
+function toggleMobile(){document.getElementById('mobileMenu').classList.toggle('open')}
+function closeMobile(){document.getElementById('mobileMenu').classList.remove('open')}
+
+const navLinks=[...document.querySelectorAll('nav .links a, .mobile-menu a')];
+const sections=[...document.querySelectorAll('section[id]')];
+
+const navObserver=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      navLinks.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+e.target.id));
+    }
+  });
+},{threshold:.3,rootMargin:'-60px 0px -40% 0px'});
+sections.forEach(s=>navObserver.observe(s));
+
+/* ── Scroll Reveal ── */
+const revealObserver=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');revealObserver.unobserve(e.target)}});
+},{threshold:.1});
+sections.forEach(s=>{if(s.id!=='hero')revealObserver.observe(s)});
+
+/* ══════════════════════════════════════ */
+/* ── Component Explorer ── */
+/* ══════════════════════════════════════ */
+const componentData={
+  tank:{name:'Water Tank',role:'Stores fresh water for brewing and steaming',specs:{Material:'BPA-free plastic',Capacity:'2.5 litres (~84 oz)',Location:'Rear of machine, removable',Refill:'Lift-off lid, no plumbing required'},failure:'Cracks in tank walls from thermal stress or age. Silicone gasket at pickup tube can degrade, causing air leaks and pump cavitation.',helpLink:'https://www.home-barista.com/espresso-machines/',helpLabel:'Troubleshooting guide'},
+  pump:{name:'Vibratory Pump (Ulka)',role:'Draws water from tank and pressurizes it for extraction',specs:{Type:'Ulka EP5 vibratory',Pressure:'Up to ~15 bar (unrestricted)',Power:'48W',Flow:'~280 ml/min'},failure:'Pump weakening over time — unable to reach target pressure. Typical lifespan 5-8 years. Buzzing without flow indicates air lock or failed check valve.',helpLink:'https://www.home-barista.com/espresso-machines/',helpLabel:'Pump diagnosis guide'},
+  opv:{name:'Over-Pressure Valve (OPV)',role:'Limits maximum brew pressure by diverting excess flow back to the tank',specs:{Type:'Spring-loaded bypass valve','Factory Setting':'~12 bar','Ideal Setting':'9 bar',Adjustment:'External hex bolt (V3+)'},failure:'Factory set too high at 12 bar, causing harsh over-extraction. V1/V2 models require spring replacement to adjust. Sticky valve can cause inconsistent pressure.',helpLink:'https://www.home-barista.com/espresso-machines/opv-over-pressure-valve-adjustment-rancilio-silvia-t67082.html',helpLabel:'OPV adjustment walkthrough'},
+  boiler:{name:'Brass Boiler',role:'Heats and stores water at brew or steam temperature',specs:{Material:'Brass',Capacity:'300 ml','Brew Temp':'~96°C (thermostat controlled)','Steam Temp':'~140°C'},failure:'Scale buildup from hard water reduces heating efficiency and clogs passages. Descale every 2-3 months with citric acid. Brass is durable but conducts heat to the group inconsistently.',helpLink:'https://www.home-barista.com/espresso-machines/',helpLabel:'Descaling guide'},
+  element:{name:'Heating Element',role:'Electric resistance heater immersed in the boiler',specs:{Power:'1100W','Voltage':'120V or 230V (model dependent)',Type:'Immersion cartridge heater',Control:'Thermostat on/off cycling'},failure:'Element burnout is rare but terminal. Scale deposits on element surface act as insulation, increasing heat-up time and reducing efficiency.',helpLink:'https://www.home-barista.com/espresso-machines/',helpLabel:'Element replacement thread'},
+  thermostats:{name:'Thermostats (Brew / Steam / Safety)',role:'Mechanical bimetal switches that control the heating element',specs:{'Brew Thermostat':'Opens at ~100°C, closes at ~86°C','Steam Thermostat':'Opens at ~140°C, closes at ~130°C','Safety Thermostat':'Opens at ~165°C (manual reset)',Type:'Bimetal disc, snap-action'},failure:'Wide dead band (±8°C) is the main limitation — temperature swings between thermostat open and close points. This is why PID mods are popular. Safety thermostat trips if both others fail.',helpLink:'https://www.schneordesign.com/diy/diy-coffee/rancilio-silvia/',helpLabel:'Why upgrade to PID'},
+  solenoid:{name:'3-Way Solenoid Valve',role:'Routes water to group head during brewing, vents pressure to drip tray after',specs:{Type:'3-way, normally closed',Voltage:'230V AC (or 120V)','Opens when':'Brew switch activated',Function:'Brew path + pressure release'},failure:'Stuck valve prevents proper pressure release after shots (no "hiss" sound). Can cause water to drip from group head. Often fixable by cleaning or replacing the plunger and spring.',helpLink:'https://www.home-barista.com/espresso-machines/',helpLabel:'Solenoid rebuild guide'},
+  grouphead:{name:'Group Head',role:'Holds the portafilter and distributes water evenly over the coffee puck',specs:{Type:'Modified E61-style',Material:'Chrome-plated brass',Gasket:'8.5mm silicone',Screen:'54mm shower screen + dispersion block'},failure:'Group gasket hardens over time — causes leaking around portafilter. Replace every 6-12 months. Shower screen clogs with coffee oils — backflush weekly with detergent.',helpLink:'https://www.home-barista.com/espresso-machines/',helpLabel:'Group maintenance guide'},
+  portafilter:{name:'Portafilter',role:'Holds the filter basket containing ground coffee and locks into the group head',specs:{Diameter:'58mm',Type:'Commercial-style, bottomless available',Basket:'Single (7g), Double (14-18g), Triple',Material:'Chrome-plated brass'},failure:'Worn lugs can cause the portafilter to feel loose. Basket holes clogging causes channeling. Bottomless portafilter is useful for diagnosing extraction issues.',helpLink:'https://www.home-barista.com/espresso-machines/',helpLabel:'Basket & portafilter tips'},
+  steamwand:{name:'Steam Wand',role:'Delivers pressurized steam from the boiler for milk frothing',specs:{Type:'Single-hole tip (Panarello on some models)',Material:'Stainless steel','Steam Pressure':'~1.0-1.5 bar',Control:'Manual knob on right side'},failure:'Milk residue clogs the steam tip — purge after every use. Panarello attachment can be removed for a bare wand (better microfoam). Steam knob valve can leak if o-ring degrades.',helpLink:'https://www.home-barista.com/espresso-machines/',helpLabel:'Steam wand maintenance'}
+};
+
+const detailPanel=document.getElementById('detailPanel');
+let activeComponent=null;
+
+document.querySelectorAll('.comp-group').forEach(g=>{
+  g.addEventListener('click',()=>{
+    const key=g.dataset.component;
+    if(activeComponent===key){
+      activeComponent=null;
+      document.querySelectorAll('.comp-group').forEach(x=>x.classList.remove('active'));
+      detailPanel.innerHTML='<p class="prompt">Select a component to view details</p>';
+      return;
+    }
+    activeComponent=key;
+    document.querySelectorAll('.comp-group').forEach(x=>x.classList.remove('active'));
+    g.classList.add('active');
+    const d=componentData[key];
+    if(!d)return;
+    let specHtml='';
+    for(const[k,v] of Object.entries(d.specs)){specHtml+=`<dt>${k}</dt><dd class="mono">${v}</dd>`}
+    const helpHtml=d.helpLink?`<a href="${d.helpLink}" target="_blank" rel="noopener" class="help-link">${d.helpLabel}</a>`:'';
+    detailPanel.innerHTML=`
+      <h3>${d.name}</h3>
+      <p class="role">${d.role}</p>
+      <dl class="spec-grid">${specHtml}</dl>
+      <div class="failure"><strong>Common failure</strong>${d.failure}${helpHtml}</div>
+    `;
+  });
+});
+
+/* ══════════════════════════════════════ */
+/* ── Water Flow Animation ── */
+/* ══════════════════════════════════════ */
+const flowPaths={
+  brew:['pathTankPump','pathPumpOPV','pathOPVBoiler','pathBoilerSolenoid','pathSolenoidGroup','pathGroupPorta'],
+  opvReturn:['pathOPVReturn'],
+  steam:['pathBoilerSteam'],
+  backflush:['pathTankPump','pathPumpOPV','pathOPVBoiler','pathBoilerSolenoid','pathSolenoidDrain'],
+  backflushReturn:['pathOPVReturn'],
+  hotwater:['pathTankPump','pathPumpOPV','pathOPVBoiler','pathBoilerSteam']
+};
+
+const flowNodeInfo={
+  tank:'The 2.5L removable water tank sits at the rear of the machine. Water is drawn from the bottom through a pickup tube by the pump.',
+  pump:'The Ulka EP5 vibratory pump pressurizes water up to ~15 bar. It only runs when the brew switch is on.',
+  opv:'The Over-Pressure Valve limits brew pressure. When pressure exceeds its set point, excess water is diverted back to the tank via a return tube.',
+  boiler:'The 300ml brass boiler heats water to brew (~96°C) or steam (~140°C) temperature. Water passes through on its way to the group.',
+  solenoid:'The 3-way solenoid valve opens during brewing to allow pressurized water to reach the group head. When brewing stops, it vents remaining pressure to the drip tray.',
+  grouphead:'Water exits through the shower screen and dispersion block, distributing evenly across the coffee puck in the portafilter basket.',
+  portafilter:'Ground coffee in the basket resists water flow, creating the back-pressure needed for extraction. Espresso exits through the spouts into your cup.',
+  steamwand:'In steam mode, the boiler heats to ~140°C. Opening the steam knob releases pressurized steam through the wand tip for frothing milk.',
+  drain:'During backflushing, the solenoid vents dirty water and detergent to the drip tray drain, cleaning the brew circuit.',
+  hotwater:'In hot water mode, the pump pushes water through the boiler at brew temperature. Opening the steam knob dispenses hot water through the wand — useful for Americanos or preheating cups.'
+};
+
+let currentFlowMode='brew';
+let flowParticles=[];
+let flowAnimId=null;
+
+function setFlowMode(mode){
+  currentFlowMode=mode;
+  document.querySelectorAll('.flow-btn').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));
+  // Reset all paths
+  document.querySelectorAll('#flowSvg path[id^="path"]').forEach(p=>{p.style.opacity='.15';p.style.stroke=''});
+  // Highlight active paths
+  const active=flowPaths[mode]||[];
+  active.forEach(id=>{const el=document.getElementById(id);if(el){el.style.opacity='.6'}});
+  // Show OPV return in brew mode
+  if(mode==='brew'){const r=document.getElementById('pathOPVReturn');if(r)r.style.opacity='.4'}
+  if(mode==='backflush'){
+    const r=document.getElementById('pathOPVReturn');if(r)r.style.opacity='.3';
+    const d=document.getElementById('pathSolenoidDrain');if(d)d.style.opacity='.5';
+  }
+  if(mode==='steam'){const s=document.getElementById('pathBoilerSteam');if(s){s.style.opacity='.6';s.style.stroke='#d4a373'}}
+  if(mode==='hotwater'){
+    const s=document.getElementById('pathBoilerSteam');if(s){s.style.opacity='.6';s.style.stroke='#3aafa9'}
+  }
+  // Show/hide drain node
+  const drain=document.querySelector('.flow-node[data-node="drain"]');
+  if(drain)drain.style.opacity=mode==='backflush'?'1':'.4';
+
+  // Restart particles
+  flowParticles=[];
+  document.getElementById('flowParticles').innerHTML='';
+  startFlowParticles();
+}
+
+function startFlowParticles(){
+  if(flowAnimId)cancelAnimationFrame(flowAnimId);
+  const container=document.getElementById('flowParticles');
+  const pathIds=flowPaths[currentFlowMode]||[];
+  const svgEl=document.getElementById('flowSvg');
+
+  // Create particles for each active path
+  pathIds.forEach(pid=>{
+    const pathEl=document.getElementById(pid);
+    if(!pathEl)return;
+    const len=pathEl.getTotalLength();
+    const count=Math.max(2,Math.floor(len/80));
+    for(let i=0;i<count;i++){
+      const circle=document.createElementNS('http://www.w3.org/2000/svg','circle');
+      const isSteam=currentFlowMode==='steam';
+      circle.setAttribute('r',isSteam?'3':'3.5');
+      circle.setAttribute('class',isSteam?'particle-steam':'particle');
+      container.appendChild(circle);
+      flowParticles.push({el:circle,path:pathEl,len,offset:i/count,speed:isSteam?.003:.0025});
+    }
+  });
+
+  // OPV return particles in brew mode
+  if(currentFlowMode==='brew'){
+    const retPath=document.getElementById('pathOPVReturn');
+    if(retPath){
+      const len=retPath.getTotalLength();
+      for(let i=0;i<2;i++){
+        const circle=document.createElementNS('http://www.w3.org/2000/svg','circle');
+        circle.setAttribute('r','2.5');
+        circle.setAttribute('class','particle');
+        circle.style.opacity='.4';
+        container.appendChild(circle);
+        flowParticles.push({el:circle,path:retPath,len,offset:i/2,speed:.002});
+      }
+    }
+  }
+
+  function animateParticles(){
+    flowParticles.forEach(p=>{
+      p.offset=(p.offset+p.speed)%1;
+      const pt=p.path.getPointAtLength(p.offset*p.len);
+      p.el.setAttribute('cx',pt.x);
+      p.el.setAttribute('cy',pt.y);
+    });
+    flowAnimId=requestAnimationFrame(animateParticles);
+  }
+  animateParticles();
+}
+
+// Flow popup
+const flowPopup=document.getElementById('flowPopup');
+let flowPopupTimeout=null;
+
+function showFlowPopup(evt,node){
+  const info=flowNodeInfo[node];
+  if(!info)return;
+  flowPopup.textContent=info;
+  flowPopup.classList.add('show');
+  const rect=evt.currentTarget.getBoundingClientRect();
+  const container=document.querySelector('.flow-diagram').getBoundingClientRect();
+  flowPopup.style.left=(rect.left-container.left+rect.width/2-120)+'px';
+  flowPopup.style.top=(rect.top-container.top-80)+'px';
+  clearTimeout(flowPopupTimeout);
+  flowPopupTimeout=setTimeout(()=>flowPopup.classList.remove('show'),3500);
+}
+
+// Initialize flow
+setTimeout(()=>setFlowMode('brew'),500);
+
+/* ══════════════════════════════════════ */
+/* ── Electrical Diagram ── */
+/* ══════════════════════════════════════ */
+let currentElecMode='brew';
+
+function setElecMode(mode){
+  currentElecMode=mode;
+  document.querySelectorAll('.elec-btn').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));
+  const bypass=document.getElementById('wireBypass');
+  const brewThermo=document.querySelector('[data-ec="brew-thermo"]');
+  const steamThermo=document.querySelector('[data-ec="steam-thermo"]');
+  const bypassLabel=document.getElementById('bypassLabel');
+  const desc=document.getElementById('elecModeDesc');
+
+  const explanation=document.getElementById('elecExplanation');
+
+  if(mode==='brew'){
+    bypass.classList.add('dimmed');bypass.classList.remove('highlighted','flowing');
+    brewThermo.classList.remove('dimmed');
+    steamThermo.classList.remove('dimmed');
+    bypassLabel.style.display='none';
+    desc.textContent='Brew Mode: Current flows through both thermostats in series to the heating element';
+    explanation.textContent='In brew mode, current flows through both thermostats in series. Both thermostats are normally closed (conducting) at brew temperature (~96\u00B0C). The brew thermostat (86\u2013102\u00B0C) is the active controller \u2014 it cycles the element on and off. The steam thermostat (130\u2013145\u00B0C) stays closed and acts as a safety backup: if the brew thermostat failed closed, the steam thermostat would cut power before the boiler reaches dangerous temperatures.';
+    // Animate main path
+    document.querySelectorAll('.wire-live').forEach(w=>{w.classList.add('highlighted');w.classList.remove('dimmed')});
+  } else {
+    bypass.classList.remove('dimmed');bypass.classList.add('highlighted','flowing');
+    brewThermo.classList.add('dimmed');
+    steamThermo.classList.remove('dimmed');
+    bypassLabel.style.display='';
+    desc.textContent='Steam Mode: Bypass wire routes around brew thermostat \u2014 steam thermostat controls at ~140\u00B0C';
+    explanation.textContent='In steam mode, a bypass wire routes current around the brew thermostat. This is necessary because the brew thermostat opens (cuts power) at ~102\u00B0C \u2014 far below the ~140\u00B0C needed for steam. The bypass skips it entirely, letting the steam thermostat (130\u2013145\u00B0C) take over as the active controller. A separate safety thermostat at 165\u00B0C provides the final backup.';
+    document.querySelectorAll('.wire-live').forEach(w=>{w.classList.remove('highlighted')});
+    // Keep power lines visible
+    document.getElementById('wireMainsToSwitch').classList.add('highlighted');
+    document.getElementById('wireSteamToElement').classList.add('highlighted');
+  }
+}
+setTimeout(()=>setElecMode('brew'),600);
+
+/* ══════════════════════════════════════ */
+/* ── Temperature Simulation ── */
+/* ══════════════════════════════════════ */
+const canvas=document.getElementById('tempCanvas');
+const ctx=canvas.getContext('2d');
+
+// Simulation state
+let sim={
+  temp:20,           // Current boiler temperature (°C)
+  heating:false,     // Is the system on?
+  elementOn:false,   // Is the element currently active?
+  steamMode:false,   // Steam or brew mode?
+  brewing:false,     // Currently pulling a shot?
+  brewTimer:0,       // Frames left in brew
+  surfStep:-1,       // Current temperature surf step (-1 = inactive)
+  surfTimer:0,
+  history:[],        // Temperature history array
+  maxHistory:400,
+  time:0,
+  realTimeMs:0,      // Simulated real time in ms
+  brewElapsed:0,     // Simulated brew time in ms
+  annotations:[]     // Active annotations
+};
+
+// Thermostat parameters
+const BREW_ON=86, BREW_OFF=102;
+const STEAM_ON=130, STEAM_OFF=145;
+const AMBIENT=20;
+const HEAT_RATE=0.7;     // °C per frame when element on (~8x real-time)
+const COOL_RATE=0.03;    // °C per frame ambient cooling
+const BREW_COOL_RATE=0.9;// °C per frame during shot (cold water influx)
+const TIME_SCALE=8;      // 8x real time
+
+function resizeCanvas(){
+  const wrap=canvas.parentElement;
+  canvas.width=wrap.clientWidth*2;
+  canvas.height=wrap.clientHeight*2;
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.scale(2,2);
+}
+resizeCanvas();
+window.addEventListener('resize',resizeCanvas);
+
+function addAnnotation(text,duration=120){
+  sim.annotations.push({text,frames:duration,age:0});
+}
+
+function updateSim(){
+  if(!sim.heating){
+    // Cool toward ambient
+    if(sim.temp>AMBIENT)sim.temp-=COOL_RATE*.3;
+  } else {
+    const onThresh=sim.steamMode?STEAM_ON:BREW_ON;
+    const offThresh=sim.steamMode?STEAM_OFF:BREW_OFF;
+
+    // Thermostat logic
+    if(sim.temp<=onThresh&&!sim.elementOn){
+      sim.elementOn=true;
+      addAnnotation('Thermostat closes — element ON');
+    }
+    if(sim.temp>=offThresh&&sim.elementOn){
+      sim.elementOn=false;
+      addAnnotation('Thermostat opens — element OFF');
+    }
+
+    // Heating
+    if(sim.elementOn){
+      sim.temp+=HEAT_RATE*(0.15+Math.random()*0.02);
+    } else {
+      // Overshoot & cool
+      if(sim.temp>AMBIENT)sim.temp-=COOL_RATE*(1+Math.random()*.3);
+    }
+
+    // Brewing cools boiler
+    if(sim.brewing){
+      sim.temp-=BREW_COOL_RATE*(0.12+Math.random()*0.03);
+      sim.brewTimer--;
+      if(sim.brewTimer<=0){
+        sim.brewing=false;
+        addAnnotation('Shot complete — recovery begins');
+        document.getElementById('btnBrew').disabled=false;
+      }
+    }
+  }
+
+  // Track simulated real time
+  sim.realTimeMs+=(1000/60)*TIME_SCALE;
+  if(sim.brewing){sim.brewElapsed+=(1000/60)*TIME_SCALE}
+
+  // Clamp
+  sim.temp=Math.max(AMBIENT,Math.min(170,sim.temp));
+
+  // Record history
+  sim.history.push(sim.temp);
+  if(sim.history.length>sim.maxHistory)sim.history.shift();
+  sim.time++;
+
+  // Age annotations
+  sim.annotations.forEach(a=>a.age++);
+  sim.annotations=sim.annotations.filter(a=>a.age<a.frames);
+
+  // Surf guide logic
+  if(sim.surfStep>=0)updateSurf();
+
+  // Update readouts
+  document.getElementById('tempValue').textContent=sim.temp.toFixed(1)+'°C';
+  document.getElementById('elementState').textContent=sim.elementOn?'ON (heating)':'OFF';
+  document.getElementById('elementState').style.color=sim.elementOn?'#c45e3a':'#5a554f';
+  const modeText=sim.surfStep>=0?'Surf Guide':sim.steamMode?'Steam':'Brew';
+  document.getElementById('modeState').textContent=modeText;
+  document.getElementById('simTimeValue').textContent=Math.floor(sim.realTimeMs/1000)+'s';
+  const shotWrap=document.getElementById('shotTimerWrap');
+  if(sim.brewing){shotWrap.style.display='';document.getElementById('shotTimerValue').textContent=(sim.brewElapsed/1000).toFixed(1)+'s'}
+  else{shotWrap.style.display='none'}
+}
+
+function drawChart(){
+  const w=canvas.width/2, h=canvas.height/2;
+  const pad={top:30,right:20,bottom:30,left:50};
+  const cw=w-pad.left-pad.right, ch=h-pad.top-pad.bottom;
+
+  ctx.clearRect(0,0,w,h);
+
+  // Background
+  ctx.fillStyle='#faf8f5';
+  ctx.fillRect(0,0,w,h);
+
+  // Y-axis range
+  const minT=0, maxT=170;
+  const yScale=ch/(maxT-minT);
+  const toY=t=>pad.top+ch-(t-minT)*yScale;
+
+  // Brew zone shading
+  ctx.fillStyle='rgba(43,122,120,0.08)';
+  ctx.fillRect(pad.left,toY(96),cw,toY(90)-toY(96));
+
+  // Brew thermostat band
+  ctx.fillStyle='rgba(43,122,120,0.05)';
+  ctx.fillRect(pad.left,toY(BREW_OFF),cw,toY(BREW_ON)-toY(BREW_OFF));
+
+  // Steam thermostat band
+  if(sim.steamMode){
+    ctx.fillStyle='rgba(212,163,115,0.08)';
+    ctx.fillRect(pad.left,toY(STEAM_OFF),cw,toY(STEAM_ON)-toY(STEAM_OFF));
+  }
+
+  // Grid lines
+  ctx.strokeStyle='#e0dbd5';
+  ctx.lineWidth=.5;
+  for(let t=0;t<=170;t+=20){
+    const y=toY(t);
+    ctx.beginPath();ctx.moveTo(pad.left,y);ctx.lineTo(w-pad.right,y);ctx.stroke();
+    ctx.fillStyle='#a09890';ctx.font='9px JetBrains Mono';ctx.textAlign='right';
+    ctx.fillText(t+'°',pad.left-6,y+3);
+  }
+
+  // X-axis time labels (every ~30 simulated seconds)
+  if(sim.history.length>1){
+    const step=cw/sim.maxHistory;
+    const start=Math.max(0,sim.history.length-sim.maxHistory);
+    const framesPerLabel=Math.round(30000/((1000/60)*TIME_SCALE)); // frames per 30 real seconds
+    ctx.fillStyle='#a09890';ctx.font='8px JetBrains Mono';ctx.textAlign='center';
+    for(let i=start;i<sim.history.length;i+=framesPerLabel){
+      const x=pad.left+(i-start)*step;
+      const tSec=Math.round(i*(1000/60)*TIME_SCALE/1000);
+      ctx.fillText(tSec+'s',x,h-pad.bottom+14);
+      ctx.beginPath();ctx.moveTo(x,h-pad.bottom);ctx.lineTo(x,h-pad.bottom+4);ctx.strokeStyle='#c4bdb5';ctx.lineWidth=.5;ctx.stroke();
+    }
+  }
+
+  // Ideal brew zone label
+  ctx.fillStyle='rgba(43,122,120,0.5)';ctx.font='bold 8px Inter';ctx.textAlign='left';
+  ctx.fillText('IDEAL BREW 90-96°C',pad.left+4,toY(96)+10);
+
+  if(sim.steamMode){
+    ctx.fillStyle='rgba(212,163,115,0.5)';
+    ctx.fillText('STEAM BAND 130-145°C',pad.left+4,toY(STEAM_OFF)+10);
+  }
+
+  // Temperature line
+  if(sim.history.length>1){
+    ctx.beginPath();
+    ctx.strokeStyle='#c45e3a';ctx.lineWidth=2;
+    const step=cw/sim.maxHistory;
+    const start=Math.max(0,sim.history.length-sim.maxHistory);
+    for(let i=start;i<sim.history.length;i++){
+      const x=pad.left+(i-start)*step;
+      const y=toY(sim.history[i]);
+      if(i===start)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+
+    // Current temp dot
+    const lastX=pad.left+(sim.history.length-1-start)*step;
+    const lastY=toY(sim.history[sim.history.length-1]);
+    ctx.beginPath();ctx.arc(lastX,lastY,4,0,Math.PI*2);
+    ctx.fillStyle=sim.elementOn?'#c45e3a':'#2b7a78';ctx.fill();
+  }
+
+  // Annotations
+  const annEl=document.getElementById('tempAnnotation');
+  if(sim.annotations.length>0){
+    const a=sim.annotations[sim.annotations.length-1];
+    annEl.textContent=a.text;
+    annEl.classList.add('show');
+    annEl.style.top='8px';annEl.style.right='8px';annEl.style.left='auto';
+  } else {
+    annEl.classList.remove('show');
+  }
+}
+
+let simRunning=true;
+function simLoop(){
+  if(simRunning){
+    updateSim();
+    drawChart();
+  }
+  requestAnimationFrame(simLoop);
+}
+simLoop();
+
+function toggleHeat(){
+  sim.heating=!sim.heating;
+  const btn=document.getElementById('btnHeat');
+  btn.textContent=sim.heating?'Stop Heating':'Start Heating';
+  btn.classList.toggle('active',sim.heating);
+  document.getElementById('btnBrew').disabled=!sim.heating;
+  if(!sim.heating){sim.elementOn=false}
+  else{addAnnotation('Heating started')}
+}
+
+function triggerBrew(){
+  if(!sim.heating||sim.brewing)return;
+  sim.brewing=true;
+  sim.brewElapsed=0;
+  sim.brewTimer=180; // ~3s screen time = ~24s real time at 8x
+  document.getElementById('btnBrew').disabled=true;
+  addAnnotation('Pulling shot — cold water enters boiler');
+}
+
+function toggleSteamMode(){
+  sim.steamMode=!sim.steamMode;
+  const btn=document.getElementById('btnSteam');
+  btn.classList.toggle('active',sim.steamMode);
+  btn.textContent=sim.steamMode?'Brew Mode':'Steam Mode';
+  addAnnotation(sim.steamMode?'Steam mode — target 140°C':'Brew mode — target 96°C');
+}
+
+/* Temperature Surf Guide */
+const surfSteps=[
+  {text:'Step 1: Heat the boiler. Wait for the element to cycle off (thermostat opens at ~102°C).',condition:()=>!sim.elementOn&&sim.temp>95},
+  {text:'Step 2: Thermostat opened! Flushing water to cool the boiler through the sweet spot...',action:()=>{sim.brewing=true;sim.brewTimer=30},condition:()=>!sim.brewing&&sim.temp<100&&sim.temp>80},
+  {text:'Step 3: Temperature is in the ideal range (90-96°C). Pull your shot NOW!',action:()=>{addAnnotation('IDEAL WINDOW — Pull your shot!',150)},condition:()=>sim.time-sim.surfTimer>80},
+  {text:'Temperature surf complete! You hit the ideal brew window by timing the thermostat cycle.',action:()=>{sim.surfStep=-1;document.getElementById('btnSurf').classList.remove('active');document.getElementById('btnBrew').disabled=!sim.heating}}
+];
+
+function startSurf(){
+  if(sim.surfStep>=0){sim.surfStep=-1;document.getElementById('btnSurf').classList.remove('active');return}
+  if(!sim.heating)toggleHeat();
+  sim.steamMode=false;
+  document.getElementById('btnSteam').classList.remove('active');
+  document.getElementById('btnSteam').textContent='Steam Mode';
+  sim.surfStep=0;
+  sim.surfTimer=sim.time;
+  document.getElementById('btnSurf').classList.add('active');
+  addAnnotation(surfSteps[0].text,200);
+}
+
+function updateSurf(){
+  if(sim.surfStep<0||sim.surfStep>=surfSteps.length)return;
+  const step=surfSteps[sim.surfStep];
+  if(step.condition&&step.condition()){
+    sim.surfStep++;
+    if(sim.surfStep<surfSteps.length){
+      const next=surfSteps[sim.surfStep];
+      addAnnotation(next.text,200);
+      if(next.action)next.action();
+      sim.surfTimer=sim.time;
+    }
+  }
+}
+
+/* ══════════════════════════════════════ */
+/* ── Initialize ── */
+/* ══════════════════════════════════════ */
+
+// Keyboard accessibility for mod cards
+document.querySelectorAll('.mod-card').forEach(card=>{
+  const name=card.querySelector('.mod-name');
+  card.setAttribute('tabindex','0');
+  card.setAttribute('role','button');
+  card.setAttribute('aria-label','Expand details for '+(name?name.textContent:'this mod'));
+  card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();card.classList.toggle('expanded')}});
+});
+
+// Keyboard accessibility for component explorer
+document.querySelectorAll('.comp-group').forEach(g=>{
+  const key=g.dataset.component;
+  const data=componentData[key];
+  g.setAttribute('tabindex','0');
+  g.setAttribute('role','button');
+  g.setAttribute('aria-label','View details for '+(data?data.name:key));
+  g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();g.click()}});
+});
+</script>
+</body>
+</html>
