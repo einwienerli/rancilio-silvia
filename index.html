@@ -355,103 +355,114 @@ footer a{color:var(--copper)}
     <p class="section-desc">Click any component in the cross-section to learn about its role, specs, and common failure points.</p>
     <div class="explorer-layout">
       <div class="explorer-svg-wrap">
-        <svg id="componentSvg" viewBox="0 0 560 520" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg id="componentSvg" viewBox="0 0 520 580" fill="none" xmlns="http://www.w3.org/2000/svg">
           <!-- Machine outer shell -->
-          <rect x="60" y="30" width="440" height="440" rx="12" fill="#e8e2dc" stroke="#c4bdb5" stroke-width="1.5"/>
-          <rect x="60" y="30" width="440" height="60" rx="12" fill="#ddd6ce" stroke="#c4bdb5" stroke-width="1"/>
-          <rect x="60" y="78" width="440" height="12" fill="#ddd6ce"/>
+          <rect x="30" y="20" width="460" height="520" rx="12" fill="#e8e2dc" stroke="#c4bdb5" stroke-width="1.5"/>
+          <rect x="30" y="20" width="460" height="60" rx="12" fill="#ddd6ce" stroke="#c4bdb5" stroke-width="1"/>
+          <rect x="30" y="68" width="460" height="12" fill="#ddd6ce"/>
 
-          <!-- Water Tank (right side, rear) -->
-          <g class="comp-group" data-component="tank">
-            <rect class="comp-fill" x="380" y="110" width="80" height="200" rx="6" fill="#d0e8f0" stroke="#7eb8cc" stroke-width="1.5"/>
-            <rect x="390" y="120" width="60" height="170" rx="3" fill="#b8dce8" opacity=".5"/>
-            <!-- Water level lines -->
-            <line x1="395" y1="160" x2="445" y2="160" stroke="#7eb8cc" stroke-width=".5" opacity=".5"/>
-            <line x1="395" y1="200" x2="445" y2="200" stroke="#7eb8cc" stroke-width=".5" opacity=".5"/>
-            <line x1="395" y1="240" x2="445" y2="240" stroke="#7eb8cc" stroke-width=".5" opacity=".5"/>
-            <text class="comp-label" x="420" y="330" text-anchor="middle">WATER TANK</text>
+          <!-- ═══ LEFT COLUMN: Brew Path (top → bottom) ═══ -->
+
+          <!-- Thermostats (on boiler, top) -->
+          <g class="comp-group" data-component="thermostats">
+            <circle class="comp-fill" cx="130" cy="108" r="14" fill="#e0d8cc" stroke="#a89878" stroke-width="1.5"/>
+            <text x="130" y="111" text-anchor="middle" font-size="7" fill="#6b6050" font-weight="600">B</text>
+            <circle class="comp-fill" cx="180" cy="108" r="14" fill="#e0d8cc" stroke="#a89878" stroke-width="1.5"/>
+            <text x="180" y="111" text-anchor="middle" font-size="7" fill="#6b6050" font-weight="600">S</text>
+            <circle class="comp-fill" cx="230" cy="108" r="10" fill="#f0e0d0" stroke="#c0392b" stroke-width="1.5"/>
+            <text x="230" y="111" text-anchor="middle" font-size="5" fill="#c0392b" font-weight="700">!</text>
+            <text class="comp-label" x="180" y="88" text-anchor="middle">THERMOSTATS (Brew / Steam / Safety)</text>
           </g>
 
-          <!-- Pump (lower center) -->
-          <g class="comp-group" data-component="pump">
-            <rect class="comp-fill" x="230" y="360" width="80" height="50" rx="8" fill="#a8a098" stroke="#8a837b" stroke-width="1.5"/>
-            <circle cx="270" cy="385" r="15" fill="#908880" stroke="#7a736b"/>
-            <circle cx="270" cy="385" r="6" fill="#a8a098"/>
-            <text class="comp-label" x="270" y="425" text-anchor="middle">VIBRATORY PUMP</text>
-          </g>
-
-          <!-- OPV (between pump and boiler) -->
-          <g class="comp-group" data-component="opv">
-            <rect class="comp-fill" x="170" y="365" width="45" height="40" rx="5" fill="#c4a882" stroke="#a89068" stroke-width="1.5"/>
-            <path d="M192 375 L192 395" stroke="#8a7a60" stroke-width="2"/>
-            <path d="M185 385 L200 385" stroke="#8a7a60" stroke-width="2"/>
-            <text class="comp-label" x="192" y="420" text-anchor="middle">OPV</text>
-          </g>
-
-          <!-- Boiler (center, large) -->
+          <!-- Boiler (left, large) -->
           <g class="comp-group" data-component="boiler">
-            <rect class="comp-fill" x="130" y="150" width="170" height="120" rx="16" fill="#c9b8a0" stroke="#a89878" stroke-width="2"/>
+            <rect class="comp-fill" x="80" y="120" width="200" height="115" rx="16" fill="#c9b8a0" stroke="#a89878" stroke-width="2"/>
             <!-- Internal water -->
-            <rect x="140" y="200" width="150" height="60" rx="8" fill="#b8dce8" opacity=".3"/>
-            <text class="comp-label" x="215" y="290" text-anchor="middle">BRASS BOILER (300ml)</text>
+            <rect x="90" y="175" width="180" height="50" rx="8" fill="#b8dce8" opacity=".3"/>
+            <text class="comp-label" x="180" y="252" text-anchor="middle">BRASS BOILER (300ml)</text>
           </g>
 
           <!-- Heating Element (inside boiler) -->
           <g class="comp-group" data-component="element">
-            <path class="comp-fill" d="M155 245 Q175 230 195 245 Q215 260 235 245 Q255 230 275 245" stroke="#c45e3a" stroke-width="3" fill="none" stroke-linecap="round"/>
-            <text class="comp-label" x="215" y="268" text-anchor="middle" fill="#c45e3a">HEATING ELEMENT</text>
+            <path class="comp-fill" d="M110 210 Q140 195 170 210 Q200 225 230 210" stroke="#c45e3a" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <text class="comp-label" x="170" y="228" text-anchor="middle" fill="#c45e3a">HEATING ELEMENT</text>
           </g>
 
-          <!-- Thermostats (on boiler, top) -->
-          <g class="comp-group" data-component="thermostats">
-            <circle class="comp-fill" cx="170" cy="155" r="14" fill="#e0d8cc" stroke="#a89878" stroke-width="1.5"/>
-            <text x="170" y="158" text-anchor="middle" font-size="7" fill="#6b6050" font-weight="600">B</text>
-            <circle class="comp-fill" cx="220" cy="155" r="14" fill="#e0d8cc" stroke="#a89878" stroke-width="1.5"/>
-            <text x="220" y="158" text-anchor="middle" font-size="7" fill="#6b6050" font-weight="600">S</text>
-            <circle class="comp-fill" cx="270" cy="155" r="10" fill="#f0e0d0" stroke="#c0392b" stroke-width="1.5"/>
-            <text x="270" y="158" text-anchor="middle" font-size="5" fill="#c0392b" font-weight="700">!</text>
-            <text class="comp-label" x="220" y="132" text-anchor="middle">THERMOSTATS (Brew / Steam / Safety)</text>
-          </g>
-
-          <!-- Solenoid Valve (above group head) -->
+          <!-- Solenoid Valve (below boiler) -->
           <g class="comp-group" data-component="solenoid">
-            <rect class="comp-fill" x="140" y="300" width="60" height="35" rx="6" fill="#a0b0a8" stroke="#7a8a80" stroke-width="1.5"/>
-            <circle cx="170" cy="317" r="8" fill="#8a9a90" stroke="#6a7a70"/>
-            <path d="M162 317 L178 317 M170 309 L170 325" stroke="#5a6a60" stroke-width="1.5"/>
-            <text class="comp-label" x="170" y="350" text-anchor="middle">3-WAY SOLENOID</text>
+            <rect class="comp-fill" x="115" y="280" width="60" height="35" rx="6" fill="#a0b0a8" stroke="#7a8a80" stroke-width="1.5"/>
+            <circle cx="145" cy="297" r="8" fill="#8a9a90" stroke="#6a7a70"/>
+            <path d="M137 297 L153 297 M145 289 L145 305" stroke="#5a6a60" stroke-width="1.5"/>
+            <text class="comp-label" x="145" y="330" text-anchor="middle">3-WAY SOLENOID</text>
           </g>
 
-          <!-- Group Head (bottom center) -->
+          <!-- Group Head (below solenoid) -->
           <g class="comp-group" data-component="grouphead">
-            <path class="comp-fill" d="M130 415 L130 440 Q130 455 145 455 L225 455 Q240 455 240 440 L240 415 Z" fill="#b0a898" stroke="#908878" stroke-width="1.5"/>
-            <rect x="155" y="400" width="60" height="20" rx="4" fill="#a09888" stroke="#908878"/>
+            <rect x="120" y="365" width="100" height="20" rx="4" fill="#a09888" stroke="#908878"/>
+            <path class="comp-fill" d="M95 385 L95 410 Q95 420 110 420 L230 420 Q245 420 245 410 L245 385 Z" fill="#b0a898" stroke="#908878" stroke-width="1.5"/>
             <!-- Shower screen -->
-            <line x1="160" y1="440" x2="210" y2="440" stroke="#908878" stroke-dasharray="3 2"/>
-            <text class="comp-label" x="185" y="475" text-anchor="middle">GROUP HEAD (E61-style)</text>
+            <line x1="115" y1="405" x2="225" y2="405" stroke="#908878" stroke-dasharray="3 2"/>
+            <text class="comp-label" x="170" y="438" text-anchor="middle">GROUP HEAD (E61-style)</text>
           </g>
 
-          <!-- Portafilter -->
+          <!-- Portafilter (below group head) -->
           <g class="comp-group" data-component="portafilter">
-            <path class="comp-fill" d="M150 458 L220 458 L235 488 Q185 500 135 488 Z" fill="#a09080" stroke="#887868" stroke-width="1.5"/>
-            <line x1="185" y1="490" x2="185" y2="508" stroke="#887868" stroke-width="2"/>
-            <text class="comp-label" x="185" y="518" text-anchor="middle">PORTAFILTER</text>
+            <path class="comp-fill" d="M115 423 L225 423 L240 458 Q170 470 100 458 Z" fill="#a09080" stroke="#887868" stroke-width="1.5"/>
+            <line x1="170" y1="460" x2="170" y2="478" stroke="#887868" stroke-width="2"/>
+            <text class="comp-label" x="170" y="495" text-anchor="middle">PORTAFILTER</text>
           </g>
 
-          <!-- Steam Wand (right side) -->
+          <!-- ═══ RIGHT COLUMN: Supply Path (top → bottom) ═══ -->
+
+          <!-- Water Tank (right side, rear) -->
+          <g class="comp-group" data-component="tank">
+            <rect class="comp-fill" x="370" y="80" width="75" height="170" rx="6" fill="#d0e8f0" stroke="#7eb8cc" stroke-width="1.5"/>
+            <rect x="378" y="88" width="59" height="150" rx="3" fill="#b8dce8" opacity=".5"/>
+            <!-- Water level lines -->
+            <line x1="383" y1="120" x2="432" y2="120" stroke="#7eb8cc" stroke-width=".5" opacity=".5"/>
+            <line x1="383" y1="155" x2="432" y2="155" stroke="#7eb8cc" stroke-width=".5" opacity=".5"/>
+            <line x1="383" y1="190" x2="432" y2="190" stroke="#7eb8cc" stroke-width=".5" opacity=".5"/>
+            <text class="comp-label" x="407" y="268" text-anchor="middle">WATER TANK</text>
+          </g>
+
+          <!-- OPV (below tank) -->
+          <g class="comp-group" data-component="opv">
+            <rect class="comp-fill" x="375" y="310" width="45" height="40" rx="5" fill="#c4a882" stroke="#a89068" stroke-width="1.5"/>
+            <path d="M397 320 L397 340" stroke="#8a7a60" stroke-width="2"/>
+            <path d="M390 330 L405 330" stroke="#8a7a60" stroke-width="2"/>
+            <text class="comp-label" x="397" y="365" text-anchor="middle">OPV</text>
+          </g>
+
+          <!-- Pump (below OPV) -->
+          <g class="comp-group" data-component="pump">
+            <rect class="comp-fill" x="355" y="400" width="80" height="50" rx="8" fill="#a8a098" stroke="#8a837b" stroke-width="1.5"/>
+            <circle cx="395" cy="425" r="15" fill="#908880" stroke="#7a736b"/>
+            <circle cx="395" cy="425" r="6" fill="#a8a098"/>
+            <text class="comp-label" x="395" y="465" text-anchor="middle">VIBRATORY PUMP</text>
+          </g>
+
+          <!-- ═══ BETWEEN COLUMNS: Steam Wand ═══ -->
+
+          <!-- Steam Wand -->
           <g class="comp-group" data-component="steamwand">
-            <path class="comp-fill" d="M330 170 Q360 165 365 180 L365 280 Q365 290 358 295" stroke="#b0a898" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-            <circle cx="355" cy="298" r="5" fill="#a09888" stroke="#908878"/>
             <!-- Steam knob -->
-            <circle cx="345" cy="165" r="10" fill="#c4bdb5" stroke="#a09888" stroke-width="1.5"/>
-            <text class="comp-label" x="380" y="240" text-anchor="start">STEAM WAND</text>
+            <circle cx="305" cy="125" r="10" fill="#c4bdb5" stroke="#a09888" stroke-width="1.5"/>
+            <path class="comp-fill" d="M295 130 Q310 128 315 145 L318 260 Q318 275 310 280" stroke="#b0a898" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+            <circle cx="308" cy="283" r="5" fill="#a09888" stroke="#908878"/>
+            <text class="comp-label" x="330" y="210" text-anchor="start">STEAM WAND</text>
           </g>
 
-          <!-- Connection lines (plumbing) -->
-          <line class="leader-line" x1="380" y1="260" x2="310" y2="370" />
-          <line class="leader-line" x1="230" y1="385" x2="215" y2="385" />
-          <line class="leader-line" x1="192" y1="365" x2="215" y2="270" />
-          <line class="leader-line" x1="215" y1="270" x2="170" y2="335" />
-          <line class="leader-line" x1="170" y1="335" x2="185" y2="400" />
+          <!-- ═══ Connection lines (plumbing) ═══ -->
+          <!-- Tank bottom → Pump top -->
+          <line class="leader-line" x1="407" y1="250" x2="395" y2="400" />
+          <!-- Pump output → OPV (short vertical) -->
+          <line class="leader-line" x1="395" y1="400" x2="397" y2="350" />
+          <!-- OPV → Boiler (diagonal crossing to boiler) -->
+          <line class="leader-line" x1="375" y1="330" x2="280" y2="180" />
+          <!-- Boiler bottom → Solenoid -->
+          <line class="leader-line" x1="180" y1="235" x2="145" y2="280" />
+          <!-- Solenoid → Group Head -->
+          <line class="leader-line" x1="145" y1="315" x2="155" y2="365" />
         </svg>
       </div>
 
@@ -1008,16 +1019,16 @@ sections.forEach(s=>{if(s.id!=='hero')revealObserver.observe(s)});
 /* ── Component Explorer ── */
 /* ══════════════════════════════════════ */
 const componentData={
-  tank:{name:'Water Tank',role:'Stores fresh water for brewing and steaming',specs:{Material:'BPA-free plastic',Capacity:'2.5 litres (~84 oz)',Location:'Rear of machine, removable',Refill:'Lift-off lid, no plumbing required'},failure:'Cracks in tank walls from thermal stress or age. Silicone gasket at pickup tube can degrade, causing air leaks and pump cavitation.',helpLink:'https://www.home-barista.com/espresso-machines/',helpLabel:'Troubleshooting guide'},
-  pump:{name:'Vibratory Pump (Ulka)',role:'Draws water from tank and pressurizes it for extraction',specs:{Type:'Ulka EP5 vibratory',Pressure:'Up to ~15 bar (unrestricted)',Power:'48W',Flow:'~280 ml/min'},failure:'Pump weakening over time — unable to reach target pressure. Typical lifespan 5-8 years. Buzzing without flow indicates air lock or failed check valve.',helpLink:'https://www.home-barista.com/espresso-machines/',helpLabel:'Pump diagnosis guide'},
-  opv:{name:'Over-Pressure Valve (OPV)',role:'Limits maximum brew pressure by diverting excess flow back to the tank',specs:{Type:'Spring-loaded bypass valve','Factory Setting':'~12 bar','Ideal Setting':'9 bar',Adjustment:'External hex bolt (V3+)'},failure:'Factory set too high at 12 bar, causing harsh over-extraction. V1/V2 models require spring replacement to adjust. Sticky valve can cause inconsistent pressure.',helpLink:'https://www.home-barista.com/espresso-machines/opv-over-pressure-valve-adjustment-rancilio-silvia-t67082.html',helpLabel:'OPV adjustment walkthrough'},
-  boiler:{name:'Brass Boiler',role:'Heats and stores water at brew or steam temperature',specs:{Material:'Brass',Capacity:'300 ml','Brew Temp':'~96°C (thermostat controlled)','Steam Temp':'~140°C'},failure:'Scale buildup from hard water reduces heating efficiency and clogs passages. Descale every 2-3 months with citric acid. Brass is durable but conducts heat to the group inconsistently.',helpLink:'https://www.home-barista.com/espresso-machines/',helpLabel:'Descaling guide'},
-  element:{name:'Heating Element',role:'Electric resistance heater immersed in the boiler',specs:{Power:'1100W','Voltage':'120V or 230V (model dependent)',Type:'Immersion cartridge heater',Control:'Thermostat on/off cycling'},failure:'Element burnout is rare but terminal. Scale deposits on element surface act as insulation, increasing heat-up time and reducing efficiency.',helpLink:'https://www.home-barista.com/espresso-machines/',helpLabel:'Element replacement thread'},
-  thermostats:{name:'Thermostats (Brew / Steam / Safety)',role:'Mechanical bimetal switches that control the heating element',specs:{'Brew Thermostat':'Opens at ~100°C, closes at ~86°C','Steam Thermostat':'Opens at ~140°C, closes at ~130°C','Safety Thermostat':'Opens at ~165°C (manual reset)',Type:'Bimetal disc, snap-action'},failure:'Wide dead band (±8°C) is the main limitation — temperature swings between thermostat open and close points. This is why PID mods are popular. Safety thermostat trips if both others fail.',helpLink:'https://www.schneordesign.com/diy/diy-coffee/rancilio-silvia/',helpLabel:'Why upgrade to PID'},
-  solenoid:{name:'3-Way Solenoid Valve',role:'Routes water to group head during brewing, vents pressure to drip tray after',specs:{Type:'3-way, normally closed',Voltage:'230V AC (or 120V)','Opens when':'Brew switch activated',Function:'Brew path + pressure release'},failure:'Stuck valve prevents proper pressure release after shots (no "hiss" sound). Can cause water to drip from group head. Often fixable by cleaning or replacing the plunger and spring.',helpLink:'https://www.home-barista.com/espresso-machines/',helpLabel:'Solenoid rebuild guide'},
-  grouphead:{name:'Group Head',role:'Holds the portafilter and distributes water evenly over the coffee puck',specs:{Type:'Modified E61-style',Material:'Chrome-plated brass',Gasket:'8.5mm silicone',Screen:'54mm shower screen + dispersion block'},failure:'Group gasket hardens over time — causes leaking around portafilter. Replace every 6-12 months. Shower screen clogs with coffee oils — backflush weekly with detergent.',helpLink:'https://www.home-barista.com/espresso-machines/',helpLabel:'Group maintenance guide'},
-  portafilter:{name:'Portafilter',role:'Holds the filter basket containing ground coffee and locks into the group head',specs:{Diameter:'58mm',Type:'Commercial-style, bottomless available',Basket:'Single (7g), Double (14-18g), Triple',Material:'Chrome-plated brass'},failure:'Worn lugs can cause the portafilter to feel loose. Basket holes clogging causes channeling. Bottomless portafilter is useful for diagnosing extraction issues.',helpLink:'https://www.home-barista.com/espresso-machines/',helpLabel:'Basket & portafilter tips'},
-  steamwand:{name:'Steam Wand',role:'Delivers pressurized steam from the boiler for milk frothing',specs:{Type:'Single-hole tip (Panarello on some models)',Material:'Stainless steel','Steam Pressure':'~1.0-1.5 bar',Control:'Manual knob on right side'},failure:'Milk residue clogs the steam tip — purge after every use. Panarello attachment can be removed for a bare wand (better microfoam). Steam knob valve can leak if o-ring degrades.',helpLink:'https://www.home-barista.com/espresso-machines/',helpLabel:'Steam wand maintenance'}
+  tank:{name:'Water Tank',role:'Stores fresh water for brewing and steaming',specs:{Material:'BPA-free plastic',Capacity:'2.5 litres (~84 oz)',Location:'Rear of machine, removable',Refill:'Lift-off lid, no plumbing required'},failure:'Cracks in tank walls from thermal stress or age. Silicone gasket at pickup tube can degrade, causing air leaks and pump cavitation.',helpLink:'https://www.home-barista.com/repairs/rancilio-silvia-troubleshooting-t48201.html',helpLabel:'Troubleshooting guide'},
+  pump:{name:'Vibratory Pump (Ulka)',role:'Draws water from tank and pressurizes it for extraction',specs:{Type:'Ulka EP5 vibratory',Pressure:'Up to ~15 bar (unrestricted)',Power:'48W',Flow:'~280 ml/min'},failure:'Pump weakening over time — unable to reach target pressure. Typical lifespan 5-8 years. Buzzing without flow indicates air lock or failed check valve.',helpLink:'https://www.home-barista.com/repairs/how-can-i-tell-if-vibe-pump-is-going-bad-rancilio-silvia-t48470.html',helpLabel:'Pump diagnosis guide'},
+  opv:{name:'Over-Pressure Valve (OPV)',role:'Limits maximum brew pressure by diverting excess flow back to the tank',specs:{Type:'Spring-loaded bypass valve','Factory Setting':'~12 bar','Ideal Setting':'9 bar',Adjustment:'External hex bolt (V3+)'},failure:'Factory set too high at 12 bar, causing harsh over-extraction. V1/V2 models require spring replacement to adjust. Sticky valve can cause inconsistent pressure.',helpLink:'https://www.home-barista.com/espresso-machines/adjusting-opv-on-rancilio-silvia-t37642.html',helpLabel:'OPV adjustment walkthrough'},
+  boiler:{name:'Brass Boiler',role:'Heats and stores water at brew or steam temperature',specs:{Material:'Brass',Capacity:'300 ml','Brew Temp':'~96°C (thermostat controlled)','Steam Temp':'~140°C'},failure:'Scale buildup from hard water reduces heating efficiency and clogs passages. Descale every 2-3 months with citric acid. Brass is durable but conducts heat to the group inconsistently.',helpLink:'https://www.home-barista.com/espresso-machines/rancilio-silvia-descaling-pictures-t8279.html',helpLabel:'Descaling guide'},
+  element:{name:'Heating Element',role:'Electric resistance heater immersed in the boiler',specs:{Power:'1100W','Voltage':'120V or 230V (model dependent)',Type:'Immersion cartridge heater',Control:'Thermostat on/off cycling'},failure:'Element burnout is rare but terminal. Scale deposits on element surface act as insulation, increasing heat-up time and reducing efficiency.',helpLink:'https://www.home-barista.com/repairs/rancilio-silvia-heating-element-replacement-steam-valve-problem-t76271.html',helpLabel:'Element replacement thread'},
+  thermostats:{name:'Thermostats (Brew / Steam / Safety)',role:'Mechanical bimetal switches that control the heating element',specs:{'Brew Thermostat':'Opens at ~100°C, closes at ~86°C','Steam Thermostat':'Opens at ~140°C, closes at ~130°C','Safety Thermostat':'Opens at ~165°C (manual reset)',Type:'Bimetal disc, snap-action'},failure:'Wide dead band (±8°C) is the main limitation — temperature swings between thermostat open and close points. This is why PID mods are popular. Safety thermostat trips if both others fail.',helpLink:'https://www.home-barista.com/espresso-machines/rancilio-silvia-pid-installation-t71147.html',helpLabel:'Why upgrade to PID'},
+  solenoid:{name:'3-Way Solenoid Valve',role:'Routes water to group head during brewing, vents pressure to drip tray after',specs:{Type:'3-way, normally closed',Voltage:'230V AC (or 120V)','Opens when':'Brew switch activated',Function:'Brew path + pressure release'},failure:'Stuck valve prevents proper pressure release after shots (no "hiss" sound). Can cause water to drip from group head. Often fixable by cleaning or replacing the plunger and spring.',helpLink:'https://www.home-barista.com/espresso-machines/cleaning-out-3-way-valve-on-rancilio-silvia-t45055.html',helpLabel:'Solenoid rebuild guide'},
+  grouphead:{name:'Group Head',role:'Holds the portafilter and distributes water evenly over the coffee puck',specs:{Type:'Modified E61-style',Material:'Chrome-plated brass',Gasket:'8.5mm silicone',Screen:'54mm shower screen + dispersion block'},failure:'Group gasket hardens over time — causes leaking around portafilter. Replace every 6-12 months. Shower screen clogs with coffee oils — backflush weekly with detergent.',helpLink:'https://www.home-barista.com/espresso-machines/planning-rancilio-silvia-maintenance-t24735.html',helpLabel:'Group maintenance guide'},
+  portafilter:{name:'Portafilter',role:'Holds the filter basket containing ground coffee and locks into the group head',specs:{Diameter:'58mm',Type:'Commercial-style, bottomless available',Basket:'Single (7g), Double (14-18g), Triple',Material:'Chrome-plated brass'},failure:'Worn lugs can cause the portafilter to feel loose. Basket holes clogging causes channeling. Bottomless portafilter is useful for diagnosing extraction issues.',helpLink:'https://www.home-barista.com/advice/rancilio-silvia-bottomless-portafilter-t45605.html',helpLabel:'Basket & portafilter tips'},
+  steamwand:{name:'Steam Wand',role:'Delivers pressurized steam from the boiler for milk frothing',specs:{Type:'Single-hole tip (Panarello on some models)',Material:'Stainless steel','Steam Pressure':'~1.0-1.5 bar',Control:'Manual knob on right side'},failure:'Milk residue clogs the steam tip — purge after every use. Panarello attachment can be removed for a bare wand (better microfoam). Steam knob valve can leak if o-ring degrades.',helpLink:'https://www.home-barista.com/repairs/leaky-steam-wand-rancilio-silvia-t64112.html',helpLabel:'Steam wand maintenance'}
 };
 
 const detailPanel=document.getElementById('detailPanel');
@@ -1266,7 +1277,7 @@ function addAnnotation(text,duration=120){
 function updateSim(){
   if(!sim.heating){
     // Cool toward ambient
-    if(sim.temp>AMBIENT)sim.temp-=COOL_RATE*.3;
+    if(sim.temp>AMBIENT)sim.temp-=COOL_RATE*(1+Math.random()*.3);
   } else {
     const onThresh=sim.steamMode?STEAM_ON:BREW_ON;
     const offThresh=sim.steamMode?STEAM_OFF:BREW_OFF;
